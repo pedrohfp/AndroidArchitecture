@@ -3,6 +3,7 @@ package br.com.androidarchictecture.view.home
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +19,7 @@ import br.com.androidarchictecture.view.home.contract.Presenter
 class ListCharactersFragment : Fragment(), ListCharactersView {
 
     //Presenter
-    var mPresenter: Presenter? = null
+    lateinit var mPresenter: Presenter
 
     companion object {
         /**
@@ -38,6 +39,8 @@ class ListCharactersFragment : Fragment(), ListCharactersView {
 
     override fun setPresenter(presenter: Presenter) {
         mPresenter = presenter
+
+        Log.e("PRESENTER: ","Recebi o presenter")
     }
 
 }

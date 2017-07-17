@@ -21,13 +21,11 @@ class CharacterPresenterModule{
         this.mListCharacterView = mListCharacterView
     }
 
-    @FragmentScoped
     @Provides
     fun provideActivityView(): ActivityView{
         return mActivityView
     }
 
-    @FragmentScoped
     @Provides
     fun provideListCharacterView(): ListCharactersView{
         return mListCharacterView

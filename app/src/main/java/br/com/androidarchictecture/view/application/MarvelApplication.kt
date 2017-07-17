@@ -8,16 +8,14 @@ import android.app.Application
 
 class MarvelApplication: Application(){
 
-    var mAppComponent: AppComponent? = null
+    companion object{
+       @JvmStatic lateinit var mAppComponent: AppComponent
+    }
 
     override fun onCreate() {
         super.onCreate()
 
         mAppComponent = initDagger(this)
-    }
-
-    fun getAppComponent(): AppComponent {
-        return mAppComponent!!
     }
 
     protected fun initDagger(application: MarvelApplication): AppComponent {

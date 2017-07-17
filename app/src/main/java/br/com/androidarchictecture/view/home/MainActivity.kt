@@ -20,7 +20,7 @@ class MainActivity : ActivityView() {
         setContentView(R.layout.activity_main)
 
         mListCharactersFragment =
-                supportFragmentManager.findFragmentById(R.id.content) as ListCharactersFragment
+                supportFragmentManager.findFragmentById(R.id.content) as ListCharactersFragment?
 
         if(mListCharactersFragment == null){
             //Create the fragment
@@ -30,9 +30,10 @@ class MainActivity : ActivityView() {
                     .addFragmentToActivity(supportFragmentManager, mListCharactersFragment!!, R.id.content)
         }
 
+
         //Create the presenter
         DaggerCharacterComponent.builder()
-                .appComponent((application as MarvelApplication).getAppComponent())
+                .appComponent(MarvelApplication.mAppComponent)
                 .characterPresenterModule(CharacterPresenterModule(this, mListCharactersFragment!!))
                 .build()
                 .inject(this)

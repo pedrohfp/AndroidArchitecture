@@ -1,5 +1,6 @@
 package br.com.androidarchictecture.view.home
 
+import android.util.Log
 import br.com.androidarchictecture.view.home.contract.ActivityView
 import br.com.androidarchictecture.view.home.contract.ListCharactersView
 import br.com.androidarchictecture.view.home.contract.Presenter
@@ -18,7 +19,9 @@ class CharacterPresenter: Presenter {
         this.mActivityView = mActivityView
         this.mListCharactersView = mListCharactersView
 
-        //mListCharactersView.setPresenter(this)
+        Log.e("CharacterPresenter: ", "ESTA DANDO CERTO PORRA")
+
+        mListCharactersView.setPresenter(this)
     }
 
     override fun start() {
