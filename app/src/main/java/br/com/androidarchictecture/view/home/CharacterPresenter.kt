@@ -23,7 +23,7 @@ class CharacterPresenter: Presenter {
     }
 
     override fun start() {
-       Log.e("PRESENTER: ", "SUCCESS")
+
     }
 
     override fun finish() {

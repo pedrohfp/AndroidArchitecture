@@ -39,8 +39,6 @@ class ListCharactersFragment : Fragment(), ListCharactersView {
 
     override fun setPresenter(presenter: Presenter) {
         mPresenter = presenter
-
-        Log.e("PRESENTER: ","Recebi o presenter")
     }
 
 }
