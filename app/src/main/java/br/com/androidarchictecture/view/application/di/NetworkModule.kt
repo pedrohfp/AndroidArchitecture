@@ -1,4 +1,4 @@
-package br.com.androidarchictecture.view.application
+package br.com.androidarchictecture.view.application.di
 
 import android.app.Application
 import com.google.gson.Gson
@@ -19,7 +19,6 @@ import retrofit2.converter.gson.GsonConverterFactory
  */
 
 @Module
-@Singleton
 class NetworkModule{
     val mBaseUrl: String
 

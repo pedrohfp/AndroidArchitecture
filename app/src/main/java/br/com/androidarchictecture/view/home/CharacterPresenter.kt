@@ -19,13 +19,11 @@ class CharacterPresenter: Presenter {
         this.mActivityView = mActivityView
         this.mListCharactersView = mListCharactersView
 
-        Log.e("CharacterPresenter: ", "ESTA DANDO CERTO PORRA")
-
         mListCharactersView.setPresenter(this)
     }
 
     override fun start() {
-
+       Log.e("PRESENTER: ", "SUCCESS")
     }
 
     override fun finish() {

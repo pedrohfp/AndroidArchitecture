@@ -1,8 +1,7 @@
-package br.com.androidarchictecture.view.application
+package br.com.androidarchictecture.view.application.di
 
-import android.content.Context
-import br.com.androidarchictecture.view.home.MainActivity
 import dagger.Component
+import retrofit2.Retrofit
 import javax.inject.Singleton
 
 /**
@@ -11,5 +10,5 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = arrayOf(AppModule::class, NetworkModule::class))
 interface AppComponent{
-    fun getContext(): Context
+    fun getRetrofit(): Retrofit
 }

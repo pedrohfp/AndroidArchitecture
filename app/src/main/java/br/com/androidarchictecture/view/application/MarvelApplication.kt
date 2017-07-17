@@ -1,6 +1,9 @@
 package br.com.androidarchictecture.view.application
 
 import android.app.Application
+import br.com.androidarchictecture.view.application.di.AppComponent
+import br.com.androidarchictecture.view.application.di.AppModule
+import br.com.androidarchictecture.view.application.di.NetworkModule
 
 /**
  * Created by pedrohenrique on 14/07/17.

@@ -1,4 +1,4 @@
-package br.com.androidarchictecture.view.home
+package br.com.androidarchictecture.view.home.di
 
 import br.com.androidarchictecture.util.FragmentScoped
 import br.com.androidarchictecture.view.home.contract.ActivityView
@@ -21,11 +21,13 @@ class CharacterPresenterModule{
         this.mListCharacterView = mListCharacterView
     }
 
+    @FragmentScoped
     @Provides
     fun provideActivityView(): ActivityView{
         return mActivityView
     }
 
+    @FragmentScoped
     @Provides
     fun provideListCharacterView(): ListCharactersView{
         return mListCharacterView

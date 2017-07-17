@@ -1,4 +1,4 @@
-package br.com.androidarchictecture.view.application
+package br.com.androidarchictecture.view.application.di
 
 import android.app.Application
 import android.content.Context
@@ -21,7 +21,7 @@ class AppModule{
 
     @Provides
     @Singleton
-    fun provideContext(): Context {
+    fun provideApplication(): Application {
         return mApplication
     }
 

@@ -1,7 +1,8 @@
-package br.com.androidarchictecture.view.home
+package br.com.androidarchictecture.view.home.di
 
 import br.com.androidarchictecture.util.FragmentScoped
-import br.com.androidarchictecture.view.application.AppComponent
+import br.com.androidarchictecture.view.application.di.AppComponent
+import br.com.androidarchictecture.view.home.MainActivity
 import dagger.Component
 
 /**

@@ -1,16 +1,17 @@
 package br.com.androidarchictecture.view.home
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import br.com.androidarchictecture.R
 import br.com.androidarchictecture.util.ActivityUtils
 import br.com.androidarchictecture.view.application.MarvelApplication
 import br.com.androidarchictecture.view.home.contract.ActivityView
-import br.com.androidarchictecture.view.home.contract.Presenter
-import kotlinx.android.synthetic.main.activity_main.*
+import br.com.androidarchictecture.view.home.di.CharacterPresenterModule
 import javax.inject.Inject
 
 class MainActivity : ActivityView() {
+
+    @Inject
+    lateinit var mPresenter: CharacterPresenter
 
     //Fragment
     var mListCharactersFragment: ListCharactersFragment? = null
@@ -37,6 +38,8 @@ class MainActivity : ActivityView() {
                 .characterPresenterModule(CharacterPresenterModule(this, mListCharactersFragment!!))
                 .build()
                 .inject(this)
+
+        mPresenter.start()
 
     }
 
