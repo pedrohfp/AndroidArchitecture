@@ -6,6 +6,7 @@ import br.com.androidarchictecture.util.ActivityUtils
 import br.com.androidarchictecture.view.application.MarvelApplication
 import br.com.androidarchictecture.view.home.contract.ActivityView
 import br.com.androidarchictecture.view.home.di.CharacterPresenterModule
+import br.com.androidarchictecture.view.home.di.DaggerCharacterComponent
 import javax.inject.Inject
 
 class MainActivity : ActivityView() {

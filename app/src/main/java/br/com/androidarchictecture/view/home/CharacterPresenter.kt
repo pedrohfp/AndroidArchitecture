@@ -1,6 +1,7 @@
 package br.com.androidarchictecture.view.home
 
 import android.util.Log
+import br.com.androidarchictecture.model.CharacterInteractor
 import br.com.androidarchictecture.view.home.contract.ActivityView
 import br.com.androidarchictecture.view.home.contract.ListCharactersView
 import br.com.androidarchictecture.view.home.contract.Presenter
@@ -15,6 +16,9 @@ class CharacterPresenter: Presenter {
     var mListCharactersView: ListCharactersView
 
     @Inject
+    lateinit var mCharacterInteractor: CharacterInteractor
+
+    @Inject
     constructor(mActivityView: ActivityView, mListCharactersView: ListCharactersView) {
         this.mActivityView = mActivityView
         this.mListCharactersView = mListCharactersView
@@ -22,8 +26,9 @@ class CharacterPresenter: Presenter {
         mListCharactersView.setPresenter(this)
     }
 
-    override fun start() {
 
+    override fun start() {
+        mCharacterInteractor.loadCharacter()
     }
 
     override fun finish() {

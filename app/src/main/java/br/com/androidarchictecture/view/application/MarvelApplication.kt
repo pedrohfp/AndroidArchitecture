@@ -3,6 +3,7 @@ package br.com.androidarchictecture.view.application
 import android.app.Application
 import br.com.androidarchictecture.view.application.di.AppComponent
 import br.com.androidarchictecture.view.application.di.AppModule
+import br.com.androidarchictecture.view.application.di.DaggerAppComponent
 import br.com.androidarchictecture.view.application.di.NetworkModule
 
 /**
