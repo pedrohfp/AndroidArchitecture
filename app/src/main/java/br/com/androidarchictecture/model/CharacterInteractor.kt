@@ -1,6 +1,8 @@
 package br.com.androidarchictecture.model
 
-import android.util.Log
+import br.com.androidarchictecture.pojo.Character
+import io.reactivex.Observable
+import io.reactivex.ObservableEmitter
 import retrofit2.Retrofit
 
 /**
@@ -14,8 +16,10 @@ class CharacterInteractor{
         this.mRetrofit = retrofit
     }
 
-    fun loadCharacter(){
-        Log.e("CharacterInteractor: ", "Success")
+    fun loadCharacter(): Observable<Character>{
+        return Observable.create({ e: ObservableEmitter<Character> ->
+            
+        })
     }
 
 

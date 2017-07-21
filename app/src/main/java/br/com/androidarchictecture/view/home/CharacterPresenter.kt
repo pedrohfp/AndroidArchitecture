@@ -26,9 +26,8 @@ class CharacterPresenter: Presenter {
         mListCharactersView.setPresenter(this)
     }
 
-
     override fun start() {
-        mCharacterInteractor.loadCharacter()
+
     }
 
     override fun finish() {
