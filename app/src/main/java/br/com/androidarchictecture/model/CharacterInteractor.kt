@@ -5,6 +5,7 @@ import br.com.androidarchictecture.model.rest.Authenticator
 import br.com.androidarchictecture.model.rest.CharacterApi
 import br.com.androidarchictecture.model.schedulers.Schedulers
 import br.com.androidarchictecture.pojo.Character
+import br.com.androidarchictecture.view.home.contract.CharacterInteractorContract
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 import okhttp3.ResponseBody
@@ -14,7 +15,7 @@ import retrofit2.Retrofit
 /**
  * Created by pedrohenrique on 20/07/17.
  */
-class CharacterInteractor{
+class CharacterInteractor: CharacterInteractorContract{
 
     var mRetrofit: Retrofit
 
@@ -22,7 +23,7 @@ class CharacterInteractor{
         this.mRetrofit = retrofit
     }
 
-    fun loadCharacter(): Observable<Character>{
+    override fun loadCharacters(): Observable<Character>{
 
         return Observable.create {
             e: ObservableEmitter<Character> ->

@@ -5,6 +5,7 @@ import br.com.androidarchictecture.model.CharacterInteractor
 import br.com.androidarchictecture.model.schedulers.Schedulers
 import br.com.androidarchictecture.pojo.Character
 import br.com.androidarchictecture.view.home.contract.ActivityView
+import br.com.androidarchictecture.view.home.contract.CharacterInteractorContract
 import br.com.androidarchictecture.view.home.contract.ListCharactersView
 import br.com.androidarchictecture.view.home.contract.Presenter
 import io.reactivex.disposables.CompositeDisposable
@@ -19,7 +20,7 @@ class CharacterPresenter: Presenter {
     var mListCharactersView: ListCharactersView
 
     @Inject
-    lateinit var mCharacterInteractor: CharacterInteractor
+    lateinit var mCharacterInteractor: CharacterInteractorContract
 
     @Inject
     constructor(mActivityView: ActivityView, mListCharactersView: ListCharactersView) {
@@ -33,7 +34,7 @@ class CharacterPresenter: Presenter {
 
         var subscriptions = CompositeDisposable()
 
-        val subscriber = mCharacterInteractor.loadCharacter()
+        val subscriber = mCharacterInteractor.loadCharacters()
                 .subscribeOn(Schedulers.network())
                 .observeOn(Schedulers.ui())
                 .subscribe(

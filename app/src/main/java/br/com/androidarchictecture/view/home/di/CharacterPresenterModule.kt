@@ -3,6 +3,7 @@ package br.com.androidarchictecture.view.home.di
 import br.com.androidarchictecture.model.CharacterInteractor
 import br.com.androidarchictecture.util.FragmentScoped
 import br.com.androidarchictecture.view.home.contract.ActivityView
+import br.com.androidarchictecture.view.home.contract.CharacterInteractorContract
 import br.com.androidarchictecture.view.home.contract.ListCharactersView
 import dagger.Module
 import dagger.Provides
@@ -40,4 +41,11 @@ class CharacterPresenterModule{
     fun provideCharacterInteractor(retrofit: Retrofit): CharacterInteractor{
         return CharacterInteractor(retrofit)
     }
+
+    @FragmentScoped
+    @Provides
+    fun provideCharacterInteractorContract(interactor: CharacterInteractor): CharacterInteractorContract{
+        return interactor
+    }
+
 }
