@@ -9,8 +9,9 @@ import java.security.NoSuchAlgorithmException
  */
 class Authenticator{
 
-    private var mApiKey = "d7eca9aa38c181fda0b58215c7c1848e"
+    var mApiKey = "d7eca9aa38c181fda0b58215c7c1848e"
     private var mPrivateKey = "f9734b014b9eeb709f21befccb04cd023aa17086"
+    private var mTimeStamp: String? = null
 
     private object Holder {val INSTANCE = Authenticator()}
 
@@ -18,11 +19,19 @@ class Authenticator{
         val instance: Authenticator by lazy { Holder.INSTANCE }
     }
 
-    fun generate(): String{
+    fun generanteTimestamp(): String{
 
-        val timeStamp = System.currentTimeMillis().toString()
+        if(mTimeStamp == null) {
+            mTimeStamp = System.currentTimeMillis().toString()
+        }
 
-        var authenticatorValues: String = timeStamp + mApiKey + mPrivateKey
+        return mTimeStamp!!
+    }
+
+
+    fun generateHash(): String{
+
+        var authenticatorValues: String = mTimeStamp + mPrivateKey + mApiKey
 
         var md = MessageDigest.getInstance("MD5")
 

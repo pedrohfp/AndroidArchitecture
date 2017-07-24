@@ -25,7 +25,7 @@ class MarvelApplication: Application(){
     protected fun initDagger(application: MarvelApplication): AppComponent {
         return DaggerAppComponent.builder()
                 .appModule(AppModule(application))
-                .networkModule(NetworkModule("https://secure.moneto.com"))
+                .networkModule(NetworkModule("https://gateway.marvel.com/"))
                 .build()
     }
 }

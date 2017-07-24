@@ -2,9 +2,12 @@ package br.com.androidarchictecture.view.home
 
 import android.util.Log
 import br.com.androidarchictecture.model.CharacterInteractor
+import br.com.androidarchictecture.model.schedulers.Schedulers
+import br.com.androidarchictecture.pojo.Character
 import br.com.androidarchictecture.view.home.contract.ActivityView
 import br.com.androidarchictecture.view.home.contract.ListCharactersView
 import br.com.androidarchictecture.view.home.contract.Presenter
+import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 /**
@@ -28,8 +31,23 @@ class CharacterPresenter: Presenter {
 
     override fun start() {
 
-    }
+        var subscriptions = CompositeDisposable()
 
+        val subscriber = mCharacterInteractor.loadCharacter()
+                .subscribeOn(Schedulers.network())
+                .observeOn(Schedulers.ui())
+                .subscribe(
+                        { character: Character ->
+
+                        },
+                        { e ->
+
+                        }
+                )
+        subscriptions.add(subscriber)
+
+
+    }
     override fun finish() {
         mActivityView.finish()
     }
