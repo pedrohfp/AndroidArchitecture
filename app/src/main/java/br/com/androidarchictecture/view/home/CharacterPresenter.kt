@@ -1,7 +1,6 @@
 package br.com.androidarchictecture.view.home
 
 import android.util.Log
-import br.com.androidarchictecture.model.CharacterInteractor
 import br.com.androidarchictecture.model.schedulers.Schedulers
 import br.com.androidarchictecture.pojo.Character
 import br.com.androidarchictecture.view.home.contract.ActivityView
@@ -32,25 +31,27 @@ class CharacterPresenter: Presenter {
 
     override fun start() {
 
+    }
+
+    override fun finish() {
+        mActivityView.finish()
+    }
+
+    override fun loadCharacters(page: Int) {
         var subscriptions = CompositeDisposable()
 
-        val subscriber = mCharacterInteractor.loadCharacters()
+        val subscriber = mCharacterInteractor.loadCharacters(page)
                 .subscribeOn(Schedulers.network())
                 .observeOn(Schedulers.ui())
                 .subscribe(
-                        { character: Character ->
-
+                        { characters: MutableList<Character> ->
+                            mListCharactersView.loadCharacters(characters)
                         },
                         { e ->
 
                         }
                 )
         subscriptions.add(subscriber)
-
-
-    }
-    override fun finish() {
-        mActivityView.finish()
     }
 
 }

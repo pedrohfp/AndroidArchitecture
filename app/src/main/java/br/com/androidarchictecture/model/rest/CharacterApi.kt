@@ -11,5 +11,6 @@ interface CharacterApi{
     @GET("v1/public/characters")
     fun loadCharacters(@Query("ts") timestamp: String,
                        @Query("apikey") apikey: String,
-                       @Query("hash") hash: String): Call<ResponseBody>
+                       @Query("hash") hash: String,
+                       @Query("offset") offset: String): Call<ResponseBody>
 }

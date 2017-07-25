@@ -40,7 +40,7 @@ class MainActivity : ActivityView() {
                 .build()
                 .inject(this)
 
-        mPresenter.start()
+        mPresenter.loadCharacters(0)
 
     }
 
