@@ -25,9 +25,15 @@ class ListCharactersFragment : Fragment(), ListCharactersView {
     //Presenter
     lateinit var mPresenter: Presenter
 
-    //Scrolling RecyclerView
+    //Scrolling - RecyclerView
     val mPageSize = 20
     var mCurrentPage = 0
+
+    //Adapter - RecyclerView
+    lateinit var adapter: ListCharactersAdapter
+
+    //List of Characters
+    val listCharacters: MutableList<Character> = mutableListOf()
 
     companion object {
         /**
@@ -73,6 +79,10 @@ class ListCharactersFragment : Fragment(), ListCharactersView {
         }
 
         recyclerView.addOnScrollListener(recyclerViewOnScrollListener)
+
+        adapter = ListCharactersAdapter(listCharacters, activity)
+        recyclerView.adapter = adapter
+
     }
 
     override fun setPresenter(presenter: Presenter) {
@@ -80,8 +90,8 @@ class ListCharactersFragment : Fragment(), ListCharactersView {
     }
 
     override fun loadCharacters(characters: MutableList<Character>) {
-        val adapter = ListCharactersAdapter(characters, activity)
-        recyclerView.adapter = adapter
+         adapter.characterList.addAll(characters)
+         adapter.notifyDataSetChanged()
     }
 }
 
