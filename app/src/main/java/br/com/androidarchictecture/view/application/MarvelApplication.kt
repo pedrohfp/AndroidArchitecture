@@ -10,7 +10,7 @@ import br.com.androidarchictecture.view.application.di.NetworkModule
  * Created by pedrohenrique on 14/07/17.
  */
 
-class MarvelApplication: Application(){
+open class MarvelApplication: Application(){
 
     companion object{
        @JvmStatic lateinit var mAppComponent: AppComponent
@@ -19,12 +19,12 @@ class MarvelApplication: Application(){
     override fun onCreate() {
         super.onCreate()
 
-        mAppComponent = initDagger(this)
+        mAppComponent = initDagger()
     }
 
-    protected fun initDagger(application: MarvelApplication): AppComponent {
+    open protected fun initDagger(): AppComponent {
         return DaggerAppComponent.builder()
-                .appModule(AppModule(application))
+                .appModule(AppModule(this))
                 .networkModule(NetworkModule("https://gateway.marvel.com/"))
                 .build()
     }
