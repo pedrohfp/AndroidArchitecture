@@ -18,6 +18,9 @@ import org.mockito.Mockito.*
 import javax.inject.Inject
 import io.reactivex.internal.schedulers.ExecutorScheduler
 import io.reactivex.disposables.Disposable
+import org.junit.After
+import org.junit.Assert
+import org.mockito.MockitoAnnotations
 import java.util.concurrent.Executor
 import java.util.concurrent.TimeUnit
 
@@ -33,17 +36,16 @@ class CharacterPresenterTest{
     @Mock
     lateinit var mListCharactersView: ListCharactersView
 
-    @Inject
+    @Mock
     lateinit var mCharacterInteractor: CharacterInteractor
 
-    @Inject
     lateinit var mCharacterPresenter: Presenter
 
     @Before
     fun setup(){
-        mActivityView = mock(ActivityView::class.java)
-        mListCharactersView = mock(ListCharactersView::class.java)
-        mCharacterInteractor = mock(CharacterInteractor::class.java)
+
+        MockitoAnnotations.initMocks(this)
+
         mCharacterPresenter = CharacterPresenterImpl(mActivityView, mListCharactersView, mCharacterInteractor)
 
         val immediate = object : Scheduler() {
@@ -60,12 +62,20 @@ class CharacterPresenterTest{
         RxAndroidPlugins.setInitMainThreadSchedulerHandler { scheduler -> immediate }
     }
 
+    @After
+    fun tearDown() {
+        RxAndroidPlugins.reset()
+    }
+
+
     @Test
     fun testLoadCharacters(){
+
         var listCharacter: MutableList<Character> = mutableListOf()
         `when`(mCharacterInteractor.loadCharacters(0)).thenReturn(Observable.just(listCharacter))
         mCharacterPresenter.loadCharacters(0)
         verify(mListCharactersView).loadCharacters(listCharacter)
+
     }
 
 }

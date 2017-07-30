@@ -21,6 +21,9 @@ import kotlinx.android.synthetic.main.fragment_list_characters.*
  * A simple [Fragment] subclass.
  */
 class ListCharactersFragment : Fragment(), ListCharactersView {
+    override fun showMessageLoadFailed() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     //Presenter
     lateinit var mPresenter: Presenter

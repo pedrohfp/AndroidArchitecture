@@ -5,6 +5,5 @@ package br.com.androidarchictecture.view.base
  */
 
 interface BasePresenter {
-    fun start()
-    fun finish()
+
 }

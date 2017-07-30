@@ -8,4 +8,5 @@ import br.com.androidarchictecture.pojo.Character
  */
 interface ListCharactersView : BaseView<Presenter>{
      fun loadCharacters(characters: MutableList<Character>)
+     fun showMessageLoadFailed()
 }

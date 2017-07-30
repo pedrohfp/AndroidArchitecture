@@ -29,14 +29,6 @@ class CharacterPresenterImpl: Presenter {
         mListCharactersView.setPresenter(this)
     }
 
-    override fun start() {
-
-    }
-
-    override fun finish() {
-        mActivityView.finish()
-    }
-
     override fun loadCharacters(page: Int) {
         var subscriptions = CompositeDisposable()
 
@@ -45,7 +37,8 @@ class CharacterPresenterImpl: Presenter {
                 .observeOn(Schedulers.ui())
                 .subscribe(
                         { characters: MutableList<Character> ->
-                            mListCharactersView.loadCharacters(characters)
+                                mListCharactersView.loadCharacters(characters)
+
                         },
                         { e ->
 
