@@ -5,14 +5,15 @@ import br.com.androidarchictecture.R
 import br.com.androidarchictecture.util.ActivityUtils
 import br.com.androidarchictecture.view.application.MarvelApplication
 import br.com.androidarchictecture.view.home.contract.ActivityView
-import br.com.androidarchictecture.view.home.di.CharacterPresenterModule
+import br.com.androidarchictecture.view.home.contract.Presenter
+import br.com.androidarchictecture.view.home.di.CharacterListModule
 import br.com.androidarchictecture.view.home.di.DaggerCharacterComponent
 import javax.inject.Inject
 
 class MainActivity : ActivityView() {
 
     @Inject
-    lateinit var mPresenter: CharacterPresenter
+    lateinit var mPresenter: Presenter
 
     //Fragment
     var mListCharactersFragment: ListCharactersFragment? = null
@@ -36,7 +37,7 @@ class MainActivity : ActivityView() {
         //Create the presenter
         DaggerCharacterComponent.builder()
                 .appComponent(MarvelApplication.mAppComponent)
-                .characterPresenterModule(CharacterPresenterModule(this, mListCharactersFragment!!))
+                .characterListModule(CharacterListModule(this, mListCharactersFragment!!))
                 .build()
                 .inject(this)
 

@@ -1,10 +1,12 @@
 package br.com.androidarchictecture.view.home.di
 
-import br.com.androidarchictecture.model.CharacterInteractor
+import br.com.androidarchictecture.model.CharacterInteractorImpl
 import br.com.androidarchictecture.util.FragmentScoped
+import br.com.androidarchictecture.view.home.CharacterPresenterImpl
 import br.com.androidarchictecture.view.home.contract.ActivityView
-import br.com.androidarchictecture.view.home.contract.CharacterInteractorContract
+import br.com.androidarchictecture.view.home.contract.CharacterInteractor
 import br.com.androidarchictecture.view.home.contract.ListCharactersView
+import br.com.androidarchictecture.view.home.contract.Presenter
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -14,7 +16,7 @@ import retrofit2.Retrofit
  */
 
 @Module
-class CharacterPresenterModule{
+class CharacterListModule {
 
     val mActivityView: ActivityView
     val mListCharacterView: ListCharactersView
@@ -38,14 +40,20 @@ class CharacterPresenterModule{
 
     @FragmentScoped
     @Provides
-    fun provideCharacterInteractor(retrofit: Retrofit): CharacterInteractor{
-        return CharacterInteractor(retrofit)
+    fun provideCharacterInteractorImpl(retrofit: Retrofit): CharacterInteractorImpl {
+        return CharacterInteractorImpl(retrofit)
     }
 
     @FragmentScoped
     @Provides
-    fun provideCharacterInteractorContract(interactor: CharacterInteractor): CharacterInteractorContract{
+    fun provideCharacterInteractor(interactor: CharacterInteractorImpl): CharacterInteractor {
         return interactor
     }
+
+   @FragmentScoped
+   @Provides
+   fun provideCharacterPresenter(presenter: CharacterPresenterImpl): Presenter{
+       return presenter
+   }
 
 }

@@ -9,7 +9,7 @@ import dagger.Component
  * Created by pedrohenrique on 15/07/17.
  */
 @FragmentScoped
-@Component(dependencies = arrayOf(AppComponent::class), modules = arrayOf(CharacterPresenterModule::class))
+@Component(dependencies = arrayOf(AppComponent::class), modules = arrayOf(CharacterListModule::class))
 interface CharacterComponent{
     fun inject(main: MainActivity)
 }
