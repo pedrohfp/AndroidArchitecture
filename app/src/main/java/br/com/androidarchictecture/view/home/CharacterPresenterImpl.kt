@@ -41,7 +41,7 @@ class CharacterPresenterImpl: Presenter {
 
                         },
                         { e ->
-
+                                mListCharactersView.showMessageLoadFailed()
                         }
                 )
         subscriptions.add(subscriber)

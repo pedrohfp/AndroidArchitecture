@@ -69,6 +69,7 @@ class CharacterInteractorImpl : CharacterInteractor {
                 }
             }catch (erro: Exception){
                 erro.printStackTrace()
+                e.onError(erro)
             }
         }
     }
