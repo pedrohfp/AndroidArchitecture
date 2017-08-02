@@ -1,8 +1,10 @@
 package br.com.androidarchictecture.view.home
 
 import android.os.Bundle
+import android.support.test.espresso.IdlingResource
 import br.com.androidarchictecture.R
 import br.com.androidarchictecture.util.ActivityUtils
+import br.com.androidarchictecture.util.SimpleIdlingResource
 import br.com.androidarchictecture.view.application.MarvelApplication
 import br.com.androidarchictecture.view.home.contract.ActivityView
 import br.com.androidarchictecture.view.home.contract.Presenter
@@ -12,15 +14,19 @@ import javax.inject.Inject
 
 class MainActivity : ActivityView() {
 
-    @Inject
     lateinit var mPresenter: Presenter
 
     //Fragment
     var mListCharactersFragment: ListCharactersFragment? = null
 
+    //IdlingResource - Espresso
+    private var mIdlingResource: SimpleIdlingResource? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        getIdlingResource()
 
         mListCharactersFragment =
                 supportFragmentManager.findFragmentById(R.id.content) as ListCharactersFragment?
@@ -41,8 +47,25 @@ class MainActivity : ActivityView() {
                 .build()
                 .inject(this)
 
-        mPresenter.loadCharacters(0)
+    }
 
+    override fun onResume() {
+        super.onResume()
+
+        mPresenter.loadCharacters(0, mIdlingResource)
+    }
+
+    @Inject
+    override fun setPresenter(presenter: Presenter) {
+        mPresenter = presenter
+    }
+
+    override fun getIdlingResource(): SimpleIdlingResource {
+        if(mIdlingResource == null){
+            mIdlingResource = SimpleIdlingResource()
+        }
+
+        return mIdlingResource!!
     }
 
 }

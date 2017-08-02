@@ -15,15 +15,13 @@ import br.com.androidarchictecture.R
 import br.com.androidarchictecture.view.home.contract.ListCharactersView
 import br.com.androidarchictecture.view.home.contract.Presenter
 import br.com.androidarchictecture.pojo.Character
+import br.com.androidarchictecture.util.SimpleIdlingResource
 import kotlinx.android.synthetic.main.fragment_list_characters.*
 
 /**
  * A simple [Fragment] subclass.
  */
 class ListCharactersFragment : Fragment(), ListCharactersView {
-    override fun showMessageLoadFailed() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
     //Presenter
     lateinit var mPresenter: Presenter
@@ -37,6 +35,9 @@ class ListCharactersFragment : Fragment(), ListCharactersView {
 
     //List of Characters
     val listCharacters: MutableList<Character> = mutableListOf()
+
+    //IdlingResources - Espresso
+    var mIdlingResources: SimpleIdlingResource? = null
 
     companion object {
         /**
@@ -75,7 +76,7 @@ class ListCharactersFragment : Fragment(), ListCharactersView {
 
                 if((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= mPageSize){
                     mCurrentPage++
-                    mPresenter.loadCharacters(mCurrentPage)
+                    mPresenter.loadCharacters(mCurrentPage, mIdlingResources)
                 }
 
             }
@@ -83,7 +84,8 @@ class ListCharactersFragment : Fragment(), ListCharactersView {
 
         recyclerView.addOnScrollListener(recyclerViewOnScrollListener)
 
-        adapter = ListCharactersAdapter(listCharacters, activity)
+        adapter = ListCharactersAdapter(activity)
+        adapter.setCharacter(listCharacters)
         recyclerView.adapter = adapter
 
     }
@@ -92,9 +94,17 @@ class ListCharactersFragment : Fragment(), ListCharactersView {
         mPresenter = presenter
     }
 
-    override fun loadCharacters(characters: MutableList<Character>) {
+    override fun showMessageLoadFailed() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun loadCharacters(characters: MutableList<Character>, idlingResource: SimpleIdlingResource?) {
          adapter.characterList.addAll(characters)
          adapter.notifyDataSetChanged()
+
+             mIdlingResources = idlingResource
+             idlingResource!!.setIdleState(true)
+
     }
 }
 

@@ -1,5 +1,6 @@
 package br.com.androidarchictecture.view.home.contract
 
+import android.support.test.espresso.IdlingResource
 import br.com.androidarchictecture.view.base.BaseActivity
 
 /**
@@ -7,4 +8,5 @@ import br.com.androidarchictecture.view.base.BaseActivity
  */
 
 abstract class ActivityView : BaseActivity<Presenter>() {
+    abstract fun getIdlingResource(): IdlingResource
 }

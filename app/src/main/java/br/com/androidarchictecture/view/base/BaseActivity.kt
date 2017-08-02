@@ -13,7 +13,7 @@ import android.view.inputmethod.InputMethodManager
  * Created by pedrohenrique on 13/07/17.
  */
 
-abstract class BaseActivity<P : BasePresenter> : AppCompatActivity() {
+abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView<P> {
     protected var waitingView: BaseView<P>? = null
     var currentStackName: String? = null
         protected set

@@ -16,7 +16,13 @@ import com.squareup.picasso.Picasso
  * Created by pedrohenrique on 25/07/17.
  */
 
-class ListCharactersAdapter(val characterList: MutableList<Character>, val context: Context) : RecyclerView.Adapter<ListCharactersAdapter.ViewHolder>(){
+class ListCharactersAdapter(val context: Context) : RecyclerView.Adapter<ListCharactersAdapter.ViewHolder>(){
+
+    lateinit var characterList: MutableList<Character>
+
+    fun setCharacter(characters: MutableList<Character>){
+        characterList = characters
+    }
 
     override fun getItemCount(): Int {
           return characterList.size

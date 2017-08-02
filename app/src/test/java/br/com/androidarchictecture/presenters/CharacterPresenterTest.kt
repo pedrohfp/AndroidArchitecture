@@ -1,6 +1,7 @@
 package br.com.androidarchictecture.presenters
 
 import br.com.androidarchictecture.pojo.Character
+import br.com.androidarchictecture.util.SimpleIdlingResource
 import br.com.androidarchictecture.view.home.CharacterPresenterImpl
 import br.com.androidarchictecture.view.home.contract.ActivityView
 import br.com.androidarchictecture.view.home.contract.CharacterInteractor
@@ -21,6 +22,7 @@ import java.util.concurrent.Executor
 import java.util.concurrent.TimeUnit
 import io.reactivex.plugins.RxJavaPlugins
 import org.mockito.ArgumentMatchers
+import org.mockito.Mock
 
 
 /**
@@ -30,6 +32,7 @@ class CharacterPresenterTest{
 
     lateinit var mActivityView: ActivityView
     lateinit var mListCharactersView: ListCharactersView
+    lateinit var mIndlingResource: SimpleIdlingResource
     lateinit var mCharacterInteractor: CharacterInteractor
     lateinit var mCharacterPresenter: Presenter
 
@@ -38,6 +41,7 @@ class CharacterPresenterTest{
 
         mActivityView = mock(ActivityView::class.java)
         mListCharactersView = mock(ListCharactersView::class.java)
+        mIndlingResource = mock(SimpleIdlingResource::class.java)
         mCharacterInteractor = mock(CharacterInteractor::class.java)
 
         mCharacterPresenter = CharacterPresenterImpl(mActivityView, mListCharactersView, mCharacterInteractor)
@@ -65,20 +69,18 @@ class CharacterPresenterTest{
         RxAndroidPlugins.reset()
     }
 
-
     @Test
     fun testLoadCharactersSuccessful(){
-
         var listCharacter: MutableList<Character> = mutableListOf()
         `when`(mCharacterInteractor.loadCharacters(ArgumentMatchers.anyInt())).thenReturn(Observable.just(listCharacter))
-        mCharacterPresenter.loadCharacters(ArgumentMatchers.anyInt())
-        verify(mListCharactersView).loadCharacters(listCharacter)
+        mCharacterPresenter.loadCharacters(ArgumentMatchers.anyInt(), mIndlingResource)
+        verify(mListCharactersView).loadCharacters(listCharacter, mIndlingResource)
     }
 
     @Test
     fun testLoadCharactersFailed(){
         `when`(mCharacterInteractor.loadCharacters(0)).thenReturn(Observable.error(Exception()))
-        mCharacterPresenter.loadCharacters(0)
+        mCharacterPresenter.loadCharacters(0, mIndlingResource)
         verify(mListCharactersView).showMessageLoadFailed()
     }
 
