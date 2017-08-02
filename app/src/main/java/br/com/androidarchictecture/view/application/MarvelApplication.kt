@@ -14,6 +14,7 @@ open class MarvelApplication: Application(){
 
     companion object{
        @JvmStatic lateinit var mAppComponent: AppComponent
+       @JvmStatic val mBaseUrl: String = "https://gateway.marvel.com/"
     }
 
     override fun onCreate() {
@@ -25,7 +26,7 @@ open class MarvelApplication: Application(){
     open protected fun initDagger(): AppComponent {
         return DaggerAppComponent.builder()
                 .appModule(AppModule(this))
-                .networkModule(NetworkModule("https://gateway.marvel.com/"))
+                .networkModule(NetworkModule(mBaseUrl))
                 .build()
     }
 }

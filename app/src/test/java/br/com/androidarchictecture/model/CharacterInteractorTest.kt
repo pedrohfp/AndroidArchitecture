@@ -1,6 +1,7 @@
 package br.com.androidarchictecture.model
 
 import br.com.androidarchictecture.BuildConfig
+import br.com.androidarchictecture.view.application.MarvelApplication
 import br.com.androidarchictecture.view.home.contract.CharacterInteractor
 import io.reactivex.Scheduler
 import io.reactivex.android.plugins.RxAndroidPlugins
@@ -40,7 +41,7 @@ class CharacterInteractorTest{
     fun setup(){
 
         mRetrofit = Retrofit.Builder()
-                .baseUrl("https://gateway.marvel.com/")
+                .baseUrl(MarvelApplication.mBaseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
