@@ -46,22 +46,6 @@ class CharacterInteractorTest{
 
         mInteractor = CharacterInteractorImpl(mRetrofit)
 
-        val immediate = object : Scheduler() {
-            override fun scheduleDirect(@NonNull run: Runnable, delay: Long, @NonNull unit: TimeUnit): Disposable {
-                // this prevents StackOverflowErrors when scheduling with a delay
-                return super.scheduleDirect(run, 0, unit)
-            }
-
-            override fun createWorker(): Worker {
-                return ExecutorScheduler.ExecutorWorker(Executor { it.run() })
-            }
-        }
-
-        RxJavaPlugins.setInitIoSchedulerHandler { scheduler -> immediate }
-        RxJavaPlugins.setInitComputationSchedulerHandler { scheduler -> immediate }
-        RxJavaPlugins.setInitNewThreadSchedulerHandler { scheduler -> immediate }
-        RxJavaPlugins.setInitSingleSchedulerHandler { scheduler -> immediate }
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler { scheduler -> immediate }
     }
 
     @After
