@@ -102,8 +102,8 @@ class ListCharactersFragment : Fragment(), ListCharactersView {
          adapter.characterList.addAll(characters)
          adapter.notifyDataSetChanged()
 
-             mIdlingResources = idlingResource
-             idlingResource!!.setIdleState(true)
+         mIdlingResources = idlingResource
+         idlingResource!!.setIdleState(true)
 
     }
 }
