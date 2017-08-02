@@ -79,8 +79,8 @@ class CharacterPresenterTest{
 
     @Test
     fun testLoadCharactersFailed(){
-        `when`(mCharacterInteractor.loadCharacters(0)).thenReturn(Observable.error(Exception()))
-        mCharacterPresenter.loadCharacters(0, mIndlingResource)
+        `when`(mCharacterInteractor.loadCharacters(ArgumentMatchers.anyInt())).thenReturn(Observable.error(Exception()))
+        mCharacterPresenter.loadCharacters(ArgumentMatchers.anyInt(), mIndlingResource)
         verify(mListCharactersView).showMessageLoadFailed()
     }
 
