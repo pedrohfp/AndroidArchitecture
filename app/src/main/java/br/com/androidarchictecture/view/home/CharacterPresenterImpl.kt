@@ -31,7 +31,7 @@ class CharacterPresenterImpl: Presenter {
         mListCharactersView.setPresenter(this)
     }
 
-    override fun loadCharacters(page: Int, idlingResource: SimpleIdlingResource?) {
+    override fun loadCharacters(page: Int, idlingResource: SimpleIdlingResource?, search: String) {
 
         if(idlingResource != null){
             idlingResource.setIdleState(false)
@@ -39,12 +39,16 @@ class CharacterPresenterImpl: Presenter {
 
         var subscriptions = CompositeDisposable()
 
-        val subscriber = mCharacterInteractor.loadCharacters(page)
+        val subscriber = mCharacterInteractor.loadCharacters(page, search)
                 .subscribeOn(Schedulers.network())
                 .observeOn(Schedulers.ui())
                 .subscribe(
                         { characters: MutableList<Character> ->
-                                mListCharactersView.loadCharacters(characters, idlingResource)
+                                if(search.isEmpty()) {
+                                    mListCharactersView.loadCharacters(characters, idlingResource, false)
+                                }else{
+                                    mListCharactersView.loadCharacters(characters, idlingResource, true)
+                                }
                         },
                         { e ->
                                 mListCharactersView.showMessageLoadFailed()

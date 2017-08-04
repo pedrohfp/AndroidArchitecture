@@ -33,7 +33,7 @@ class ListCharactersAdapterTest(){
                 Character(),
                 Character())
 
-        mAdapter = ListCharactersAdapter(RuntimeEnvironment.application)
+        mAdapter = ListCharactersAdapter(RuntimeEnvironment.application.applicationContext)
         mAdapter.setCharacter(listCharacter)
     }
 
@@ -62,4 +62,9 @@ class ListCharactersAdapterTest(){
         assertEquals(character, mAdapter.characterList.get(3))
     }
 
+    @Test
+    fun testClear(){
+        mAdapter.characterList.clear()
+        assertEquals(0, mAdapter.characterList.size)
+    }
 }

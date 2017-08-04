@@ -8,6 +8,6 @@ import br.com.androidarchictecture.util.SimpleIdlingResource
  * Created by pedrohenrique on 13/07/17.
  */
 interface ListCharactersView : BaseView<Presenter>{
-     fun loadCharacters(characters: MutableList<Character>, idlingResource: SimpleIdlingResource?)
+     fun loadCharacters(characters: MutableList<Character>, idlingResource: SimpleIdlingResource?, isSearch: Boolean)
      fun showMessageLoadFailed()
 }

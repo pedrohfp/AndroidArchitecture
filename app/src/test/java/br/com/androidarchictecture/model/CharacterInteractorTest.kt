@@ -3,6 +3,7 @@ package br.com.androidarchictecture.model
 import br.com.androidarchictecture.BuildConfig
 import br.com.androidarchictecture.view.application.MarvelApplication
 import br.com.androidarchictecture.view.home.contract.CharacterInteractor
+import com.nhaarman.mockito_kotlin.any
 import io.reactivex.Scheduler
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.annotations.NonNull
@@ -24,6 +25,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.Executor
 import java.util.concurrent.TimeUnit
+import br.com.androidarchictecture.pojo.Character
 
 /**
  * Created by pedrohenrique on 02/08/17.
@@ -57,10 +59,25 @@ class CharacterInteractorTest{
     @Test
     fun testLoadCharacters(){
         val subscriber: TestSubscriber<MutableList<Character>> = TestSubscriber.create()
-        mInteractor.loadCharacters(ArgumentMatchers.anyInt()).subscribe({ characters: MutableList<br.com.androidarchictecture.pojo.Character> ->
-            assertEquals(20, characters.size)
+        val charactersList: MutableList<Character> = mutableListOf()
+        mInteractor.loadCharacters(0, "").subscribe({ characters: MutableList<Character> ->
+            charactersList.addAll(characters)
         })
 
+        assertEquals(20, charactersList.size)
+        subscriber.assertNoErrors()
+    }
+
+    @Test
+    fun testLoadCharactersBySearch(){
+        val subscriber: TestSubscriber<MutableList<Character>> = TestSubscriber.create()
+        val charactersList: MutableList<Character> = mutableListOf()
+        mInteractor.loadCharacters(0, "Spider-Man").subscribe({ characters: MutableList<Character> ->
+            charactersList.addAll(characters)
+        })
+
+        assertNotNull(charactersList)
+        assertTrue(0 != charactersList.size)
         subscriber.assertNoErrors()
     }
 

@@ -1,18 +1,20 @@
 package br.com.androidarchictecture.view.home
 
 import br.com.androidarchictecture.BuildConfig
+import br.com.androidarchictecture.pojo.StringWord
 import br.com.androidarchictecture.util.SimpleIdlingResource
 import br.com.androidarchictecture.view.home.contract.Presenter
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.eq
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.verify
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers
-import org.mockito.Mock
-import org.mockito.MockitoAnnotations
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import org.mockito.Mockito.*
 import org.robolectric.android.controller.ActivityController
 
 
@@ -23,14 +25,18 @@ import org.robolectric.android.controller.ActivityController
 @Config(constants = BuildConfig::class)
 class MainActivityTest{
 
-    @Mock
     lateinit var mPresenter: Presenter
 
     lateinit var activity: MainActivity
 
+    lateinit var mString: StringWord
+
     @Before
     fun setup(){
-        MockitoAnnotations.initMocks(this)
+
+        mPresenter = mock()
+        mString = StringWord()
+        mString.word = ""
 
         var controller: ActivityController<MainActivity> = Robolectric.buildActivity(MainActivity::class.java).create()
         activity = controller.get()
@@ -41,7 +47,7 @@ class MainActivityTest{
 
     @Test
     fun testLoadCharactersInitiate(){
-        verify(mPresenter).loadCharacters(ArgumentMatchers.anyInt(), eq(activity.getIdlingResource()))
+        verify(mPresenter).loadCharacters(any(), eq(activity.getIdlingResource()), eq(mString.word))
     }
 
 

@@ -6,7 +6,9 @@ import br.com.androidarchictecture.pojo.Character
 import br.com.androidarchictecture.view.home.contract.CharacterInteractor
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
+import okhttp3.ResponseBody
 import org.json.JSONObject
+import retrofit2.Call
 import retrofit2.Retrofit
 
 /**
@@ -20,7 +22,7 @@ class CharacterInteractorImpl : CharacterInteractor {
         this.mRetrofit = retrofit
     }
 
-    override fun loadCharacters(page: Int): Observable<MutableList<Character>>{
+    override fun loadCharacters(page: Int, search: String): Observable<MutableList<Character>>{
 
         return Observable.create {
             e: ObservableEmitter<MutableList<Character>> ->
@@ -30,12 +32,24 @@ class CharacterInteractorImpl : CharacterInteractor {
 
                 var characterApi = mRetrofit.create(CharacterApi::class.java)
 
+                var callBody: Call<ResponseBody>?
 
-                var callBody = characterApi.loadCharacters(
-                        authenticator.generanteTimestamp(),
-                        authenticator.mApiKey,
-                        authenticator.generateHash(),
-                        page.toString())
+                if(search.isEmpty()) {
+
+                    callBody = characterApi.loadCharacters(
+                            authenticator.generanteTimestamp(),
+                            authenticator.mApiKey,
+                            authenticator.generateHash(),
+                            page.toString())
+                }else{
+
+                    callBody = characterApi.loadCharactersBySearch(
+                            authenticator.generanteTimestamp(),
+                            authenticator.mApiKey,
+                            authenticator.generateHash(),
+                            page.toString(),
+                            search)
+                }
 
                 var responseBody = callBody.execute()
 

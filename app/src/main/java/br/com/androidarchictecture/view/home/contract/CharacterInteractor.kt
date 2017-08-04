@@ -7,5 +7,5 @@ import io.reactivex.Observable
  * Created by pedrohenrique on 24/07/17.
  */
 interface CharacterInteractor {
-    fun loadCharacters(page: Int): Observable<MutableList<Character>>
+    fun loadCharacters(page: Int, search: String): Observable<MutableList<Character>>
 }

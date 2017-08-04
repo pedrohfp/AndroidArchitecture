@@ -13,4 +13,11 @@ interface CharacterApi{
                        @Query("apikey") apikey: String,
                        @Query("hash") hash: String,
                        @Query("offset") offset: String): Call<ResponseBody>
+
+    @GET("v1/public/characters")
+    fun loadCharactersBySearch(@Query("ts") timestamp: String,
+                       @Query("apikey") apikey: String,
+                       @Query("hash") hash: String,
+                       @Query("offset") offset: String,
+                       @Query("nameStartsWith") search: String): Call<ResponseBody>
 }

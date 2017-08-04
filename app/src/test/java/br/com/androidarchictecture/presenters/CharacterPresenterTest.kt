@@ -1,12 +1,15 @@
 package br.com.androidarchictecture.presenters
 
 import br.com.androidarchictecture.pojo.Character
+import br.com.androidarchictecture.pojo.StringWord
 import br.com.androidarchictecture.util.SimpleIdlingResource
 import br.com.androidarchictecture.view.home.CharacterPresenterImpl
 import br.com.androidarchictecture.view.home.contract.ActivityView
 import br.com.androidarchictecture.view.home.contract.CharacterInteractor
 import br.com.androidarchictecture.view.home.contract.ListCharactersView
 import br.com.androidarchictecture.view.home.contract.Presenter
+import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.android.plugins.RxAndroidPlugins
@@ -14,15 +17,16 @@ import io.reactivex.annotations.NonNull
 import org.junit.Before
 import org.junit.Test
 
-import org.mockito.Mockito.*
 import io.reactivex.internal.schedulers.ExecutorScheduler
 import io.reactivex.disposables.Disposable
 import org.junit.After
 import java.util.concurrent.Executor
 import java.util.concurrent.TimeUnit
 import io.reactivex.plugins.RxJavaPlugins
-import org.mockito.ArgumentMatchers
 import org.mockito.Mock
+import org.mockito.MockitoAnnotations
+import com.nhaarman.mockito_kotlin.*
+import org.mockito.ArgumentMatchers
 
 
 /**
@@ -34,15 +38,17 @@ class CharacterPresenterTest{
     lateinit var mListCharactersView: ListCharactersView
     lateinit var mIndlingResource: SimpleIdlingResource
     lateinit var mCharacterInteractor: CharacterInteractor
+    lateinit var mString: StringWord
     lateinit var mCharacterPresenter: Presenter
 
     @Before
     fun setup(){
 
-        mActivityView = mock(ActivityView::class.java)
-        mListCharactersView = mock(ListCharactersView::class.java)
-        mIndlingResource = mock(SimpleIdlingResource::class.java)
-        mCharacterInteractor = mock(CharacterInteractor::class.java)
+        mActivityView = mock()
+        mListCharactersView = mock()
+        mIndlingResource = mock()
+        mCharacterInteractor = mock()
+        mString = StringWord()
 
         mCharacterPresenter = CharacterPresenterImpl(mActivityView, mListCharactersView, mCharacterInteractor)
 
@@ -72,16 +78,15 @@ class CharacterPresenterTest{
     @Test
     fun testLoadCharactersSuccessful(){
         var listCharacter: MutableList<Character> = mutableListOf()
-        `when`(mCharacterInteractor.loadCharacters(ArgumentMatchers.anyInt())).thenReturn(Observable.just(listCharacter))
-        mCharacterPresenter.loadCharacters(ArgumentMatchers.anyInt(), mIndlingResource)
-        verify(mListCharactersView).loadCharacters(listCharacter, mIndlingResource)
+        whenever(mCharacterInteractor.loadCharacters(0, mString.word)).thenReturn(Observable.just(listCharacter))
+        mCharacterPresenter.loadCharacters(0, mIndlingResource, mString.word)
+        verify(mListCharactersView).loadCharacters(listCharacter, mIndlingResource, true)
     }
 
     @Test
     fun testLoadCharactersFailed(){
-        `when`(mCharacterInteractor.loadCharacters(ArgumentMatchers.anyInt())).thenReturn(Observable.error(Exception()))
-        mCharacterPresenter.loadCharacters(ArgumentMatchers.anyInt(), mIndlingResource)
+        whenever(mCharacterInteractor.loadCharacters(0, mString.word)).thenReturn(Observable.error(Exception()))
+        mCharacterPresenter.loadCharacters(0, mIndlingResource, mString.word)
         verify(mListCharactersView).showMessageLoadFailed()
     }
-
 }

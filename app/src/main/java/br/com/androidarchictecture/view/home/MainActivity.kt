@@ -52,7 +52,7 @@ class MainActivity : ActivityView() {
     override fun onResume() {
         super.onResume()
 
-        mPresenter.loadCharacters(0, mIdlingResource)
+        mPresenter.loadCharacters(0, mIdlingResource, "")
     }
 
     @Inject

@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.SearchView
 
 import br.com.androidarchictecture.R
 import br.com.androidarchictecture.view.home.contract.ListCharactersView
@@ -21,7 +22,7 @@ import kotlinx.android.synthetic.main.fragment_list_characters.*
 /**
  * A simple [Fragment] subclass.
  */
-class ListCharactersFragment : Fragment(), ListCharactersView {
+class ListCharactersFragment : Fragment(), ListCharactersView, SearchView.OnQueryTextListener {
 
     //Presenter
     lateinit var mPresenter: Presenter
@@ -76,7 +77,7 @@ class ListCharactersFragment : Fragment(), ListCharactersView {
 
                 if((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= mPageSize){
                     mCurrentPage++
-                    mPresenter.loadCharacters(mCurrentPage, mIdlingResources)
+                    mPresenter.loadCharacters(mCurrentPage, mIdlingResources, "")
                 }
 
             }
@@ -88,6 +89,8 @@ class ListCharactersFragment : Fragment(), ListCharactersView {
         adapter.setCharacter(listCharacters)
         recyclerView.adapter = adapter
 
+        searchView.setOnQueryTextListener(this)
+
     }
 
     override fun setPresenter(presenter: Presenter) {
@@ -98,13 +101,29 @@ class ListCharactersFragment : Fragment(), ListCharactersView {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun loadCharacters(characters: MutableList<Character>, idlingResource: SimpleIdlingResource?) {
-         adapter.characterList.addAll(characters)
-         adapter.notifyDataSetChanged()
+    override fun loadCharacters(characters: MutableList<Character>, idlingResource: SimpleIdlingResource?, isSearch: Boolean) {
+        if(isSearch == false) {
+            adapter.characterList.addAll(characters)
+            adapter.notifyDataSetChanged()
+        }else{
+            adapter.characterList.clear()
+            adapter.characterList.addAll(characters)
+            adapter.notifyDataSetChanged()
+        }
 
-         mIdlingResources = idlingResource
-         idlingResource!!.setIdleState(true)
+        mIdlingResources = idlingResource
+        idlingResource!!.setIdleState(true)
 
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        return false
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        mPresenter.loadCharacters(0, mIdlingResources, newText!!)
+
+        return false
     }
 }
 

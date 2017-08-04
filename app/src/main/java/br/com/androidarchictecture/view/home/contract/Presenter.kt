@@ -8,5 +8,5 @@ import br.com.androidarchictecture.view.base.BasePresenter
  * Created by pedrohenrique on 13/07/17.
  */
 interface Presenter : BasePresenter {
-     fun loadCharacters(page: Int, idlingResource: SimpleIdlingResource?)
+     fun loadCharacters(page: Int, idlingResource: SimpleIdlingResource?, search: String)
 }
