@@ -5,12 +5,10 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.SearchView
 
 import br.com.androidarchictecture.R
 import br.com.androidarchictecture.view.home.contract.ListCharactersView
@@ -18,11 +16,15 @@ import br.com.androidarchictecture.view.home.contract.Presenter
 import br.com.androidarchictecture.pojo.Character
 import br.com.androidarchictecture.util.SimpleIdlingResource
 import kotlinx.android.synthetic.main.fragment_list_characters.*
+import io.reactivex.android.schedulers.AndroidSchedulers
+import br.com.androidarchictecture.util.RxSearch
+import java.util.concurrent.TimeUnit
+
 
 /**
  * A simple [Fragment] subclass.
  */
-class ListCharactersFragment : Fragment(), ListCharactersView, SearchView.OnQueryTextListener {
+class ListCharactersFragment : Fragment(), ListCharactersView{
 
     //Presenter
     lateinit var mPresenter: Presenter
@@ -91,7 +93,17 @@ class ListCharactersFragment : Fragment(), ListCharactersView, SearchView.OnQuer
         adapter.setCharacter(listCharacters)
         recyclerView.adapter = adapter
 
-        searchView.setOnQueryTextListener(this)
+        RxSearch.instance.fromSearchView(searchView)
+                .debounce(300, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ query ->
+                            if(query!!.isEmpty()) {
+                                adapter.characterList.clear()
+                                mPresenter.loadCharacters(0, mIdlingResources, "")
+                            }else{
+                                mPresenter.loadCharacters(0, mIdlingResources, query!!)
+                            }
+                })
 
     }
 
@@ -118,21 +130,6 @@ class ListCharactersFragment : Fragment(), ListCharactersView, SearchView.OnQuer
 
     }
 
-    override fun onQueryTextSubmit(query: String?): Boolean {
-        return false
-    }
-
-    override fun onQueryTextChange(newText: String?): Boolean {
-
-        if(newText!!.isEmpty()) {
-            adapter.characterList.clear()
-            mPresenter.loadCharacters(0, mIdlingResources, "")
-        }else{
-            mPresenter.loadCharacters(0, mIdlingResources, newText!!)
-        }
-
-        return false
-    }
 }
 
 
