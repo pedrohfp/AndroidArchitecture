@@ -35,7 +35,7 @@ class ListCharactersFragment : Fragment(), ListCharactersView, SearchView.OnQuer
     lateinit var adapter: ListCharactersAdapter
 
     //List of Characters
-    val listCharacters: MutableList<Character> = mutableListOf()
+    lateinit var listCharacters: MutableList<Character>
 
     //IdlingResources - Espresso
     var mIdlingResources: SimpleIdlingResource? = null
@@ -58,6 +58,8 @@ class ListCharactersFragment : Fragment(), ListCharactersView, SearchView.OnQuer
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        listCharacters = mutableListOf()
 
         val layoutManager = LinearLayoutManager(activity, LinearLayout.VERTICAL, false)
 
@@ -121,7 +123,13 @@ class ListCharactersFragment : Fragment(), ListCharactersView, SearchView.OnQuer
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        mPresenter.loadCharacters(0, mIdlingResources, newText!!)
+
+        if(newText!!.isEmpty()) {
+            adapter.characterList.clear()
+            mPresenter.loadCharacters(0, mIdlingResources, "")
+        }else{
+            mPresenter.loadCharacters(0, mIdlingResources, newText!!)
+        }
 
         return false
     }
