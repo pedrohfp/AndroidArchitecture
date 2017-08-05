@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.TextView
 import br.com.androidarchictecture.R
@@ -18,10 +19,19 @@ import com.squareup.picasso.Picasso
 
 class ListCharactersAdapter(val context: Context) : RecyclerView.Adapter<ListCharactersAdapter.ViewHolder>(){
 
+    interface OnItemClickListener{
+        fun onItemClick(position: Int)
+    }
+
     lateinit var characterList: MutableList<Character>
+    lateinit var listener: OnItemClickListener
 
     fun setCharacter(characters: MutableList<Character>){
         characterList = characters
+    }
+
+    fun setItemClick(listener: OnItemClickListener){
+        this.listener = listener
     }
 
     override fun getItemCount(): Int {
@@ -29,7 +39,7 @@ class ListCharactersAdapter(val context: Context) : RecyclerView.Adapter<ListCha
     }
 
     override fun onBindViewHolder(holder: ListCharactersAdapter.ViewHolder, position: Int) {
-         holder.bindItems(characterList[position], context)
+         holder.bindItems(characterList[position], context, position, listener)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ListCharactersAdapter.ViewHolder{
@@ -38,12 +48,17 @@ class ListCharactersAdapter(val context: Context) : RecyclerView.Adapter<ListCha
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-         fun bindItems(character: Character, context: Context){
+         fun bindItems(character: Character, context: Context, position: Int, listener: OnItemClickListener){
              val itemImageView = itemView.findViewById(R.id.itemImage) as ImageView
              val itemNameTextView = itemView.findViewById(R.id.itemName) as TextView
 
              Picasso.with(context).load(character.mThumbnail).into(itemImageView)
              itemNameTextView.text = character.mName
+             itemView.setOnClickListener(object: View.OnClickListener{
+                 override fun onClick(v: View?) {
+                     listener.onItemClick(position)
+                 }
+             })
          }
     }
 

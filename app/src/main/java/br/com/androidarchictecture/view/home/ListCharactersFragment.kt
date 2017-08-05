@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -91,6 +92,13 @@ class ListCharactersFragment : Fragment(), ListCharactersView{
 
         adapter = ListCharactersAdapter(activity)
         adapter.setCharacter(listCharacters)
+
+        adapter.setItemClick(object: ListCharactersAdapter.OnItemClickListener{
+            override fun onItemClick(position: Int) {
+                Log.e("RECYCLER: ", position.toString())
+            }
+        })
+
         recyclerView.adapter = adapter
 
         RxSearch.instance.fromSearchView(searchView)
@@ -117,6 +125,7 @@ class ListCharactersFragment : Fragment(), ListCharactersView{
 
     override fun loadCharacters(characters: MutableList<Character>, idlingResource: SimpleIdlingResource?, isSearch: Boolean) {
         if(isSearch == false) {
+            adapter.characterList.clear()
             adapter.characterList.addAll(characters)
             adapter.notifyDataSetChanged()
         }else{
