@@ -38,18 +38,6 @@ class CharacterListModule {
         return mListCharacterView
     }
 
-    @FragmentScoped
-    @Provides
-    fun provideCharacterInteractorImpl(retrofit: Retrofit): CharacterInteractorImpl {
-        return CharacterInteractorImpl(retrofit)
-    }
-
-    @FragmentScoped
-    @Provides
-    fun provideCharacterInteractor(interactor: CharacterInteractorImpl): CharacterInteractor {
-        return interactor
-    }
-
    @FragmentScoped
    @Provides
    fun provideCharacterPresenter(presenter: CharacterPresenterImpl): Presenter{
