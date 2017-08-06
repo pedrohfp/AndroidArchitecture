@@ -20,7 +20,7 @@ import com.squareup.picasso.Picasso
 class ListCharactersAdapter(val context: Context) : RecyclerView.Adapter<ListCharactersAdapter.ViewHolder>(){
 
     interface OnItemClickListener{
-        fun onItemClick(position: Int)
+        fun onItemClick(id: Long)
     }
 
     lateinit var characterList: MutableList<Character>
@@ -39,7 +39,7 @@ class ListCharactersAdapter(val context: Context) : RecyclerView.Adapter<ListCha
     }
 
     override fun onBindViewHolder(holder: ListCharactersAdapter.ViewHolder, position: Int) {
-         holder.bindItems(characterList[position], context, position, listener)
+         holder.bindItems(characterList[position], context, listener)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ListCharactersAdapter.ViewHolder{
@@ -48,7 +48,7 @@ class ListCharactersAdapter(val context: Context) : RecyclerView.Adapter<ListCha
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-         fun bindItems(character: Character, context: Context, position: Int, listener: OnItemClickListener){
+         fun bindItems(character: Character, context: Context, listener: OnItemClickListener){
              val itemImageView = itemView.findViewById(R.id.itemImage) as ImageView
              val itemNameTextView = itemView.findViewById(R.id.itemName) as TextView
 
@@ -56,7 +56,7 @@ class ListCharactersAdapter(val context: Context) : RecyclerView.Adapter<ListCha
              itemNameTextView.text = character.mName
              itemView.setOnClickListener(object: View.OnClickListener{
                  override fun onClick(v: View?) {
-                     listener.onItemClick(position)
+                     listener.onItemClick(character.mId)
                  }
              })
          }

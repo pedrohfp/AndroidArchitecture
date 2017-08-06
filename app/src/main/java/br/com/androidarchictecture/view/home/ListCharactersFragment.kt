@@ -1,6 +1,7 @@
 package br.com.androidarchictecture.view.home
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -19,6 +20,7 @@ import br.com.androidarchictecture.util.SimpleIdlingResource
 import kotlinx.android.synthetic.main.fragment_list_characters.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import br.com.androidarchictecture.util.RxSearch
+import br.com.androidarchictecture.view.details.CharacterDetailsActivity
 import java.util.concurrent.TimeUnit
 
 
@@ -94,8 +96,9 @@ class ListCharactersFragment : Fragment(), ListCharactersView{
         adapter.setCharacter(listCharacters)
 
         adapter.setItemClick(object: ListCharactersAdapter.OnItemClickListener{
-            override fun onItemClick(position: Int) {
-                Log.e("RECYCLER: ", position.toString())
+            override fun onItemClick(id: Long) {
+                val intent = CharacterDetailsActivity.newIntent(activity, id)
+                activity.startActivity(intent)
             }
         })
 
