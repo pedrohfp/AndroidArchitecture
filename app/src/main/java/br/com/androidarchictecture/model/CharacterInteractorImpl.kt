@@ -88,5 +88,32 @@ class CharacterInteractorImpl : CharacterInteractor {
         }
     }
 
+    override fun loadCharactersDetails(id: Long): Observable<Character> {
+        return Observable.create {
+            e: ObservableEmitter<Character> ->
+
+            var authenticator = Authenticator.instance
+
+            try{
+                var characterApi = mRetrofit.create(CharacterApi::class.java)
+
+                var callBody = characterApi.loadCharactersDetails(
+                        id.toString(),
+                        authenticator.generanteTimestamp(),
+                        authenticator.mApiKey,
+                        authenticator.generateHash())
+
+                var responseBody = callBody.execute()
+
+                if(responseBody.isSuccessful){
+
+                }
+            }catch(erro:Exception){
+                erro.printStackTrace()
+                e.onError(erro)
+            }
+        }
+    }
+
 
 }

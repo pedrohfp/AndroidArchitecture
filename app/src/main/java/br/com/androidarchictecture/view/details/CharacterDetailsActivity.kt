@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 
 import br.com.androidarchictecture.R
 import br.com.androidarchictecture.util.ActivityUtils
@@ -38,6 +39,9 @@ class CharacterDetailsActivity : DetailsActivityView() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_character_details)
 
+        supportActionBar!!.setHomeButtonEnabled(true)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
         val characterId = intent.getLongExtra(INTENT_ID, 0)
 
         Log.e("ID CHARACTER: ", characterId.toString())
@@ -59,10 +63,19 @@ class CharacterDetailsActivity : DetailsActivityView() {
                 .detailsModule(DetailsModule(this, mDetailsCharacterFragment!!))
                 .build()
                 .inject(this)
+
+        //mPresenter.loadDetailsCharacter(characterId)
     }
 
     @Inject
     override fun setPresenter(presenter: DetailsPresenter) {
         mPresenter = presenter
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.getItemId() === android.R.id.home) {
+            onBackPressed()
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

@@ -8,4 +8,5 @@ import io.reactivex.Observable
  */
 interface CharacterInteractor {
     fun loadCharacters(page: Int, search: String): Observable<MutableList<Character>>
+    fun loadCharactersDetails(id: Long): Observable<Character>
 }
