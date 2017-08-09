@@ -24,6 +24,8 @@ class CharacterDetailsActivity : DetailsActivityView() {
     //Fragment
     var mDetailsCharacterFragment: DetailsCharacterFragment? = null
 
+    var mCharacterId: Long? = null
+
     companion object {
 
         private val INTENT_ID = "character_id"
@@ -42,9 +44,9 @@ class CharacterDetailsActivity : DetailsActivityView() {
         supportActionBar!!.setHomeButtonEnabled(true)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        val characterId = intent.getLongExtra(INTENT_ID, 0)
+        mCharacterId = intent.getLongExtra(INTENT_ID, 0)
 
-        Log.e("ID CHARACTER: ", characterId.toString())
+        Log.e("ID CHARACTER: ", mCharacterId.toString())
 
         mDetailsCharacterFragment =
                 supportFragmentManager.findFragmentById(R.id.details_content) as DetailsCharacterFragment?
@@ -63,8 +65,12 @@ class CharacterDetailsActivity : DetailsActivityView() {
                 .detailsModule(DetailsModule(this, mDetailsCharacterFragment!!))
                 .build()
                 .inject(this)
+    }
 
-        //mPresenter.loadDetailsCharacter(characterId)
+    override fun onResume() {
+        super.onResume()
+
+        mPresenter.loadDetailsCharacter(mCharacterId!!)
     }
 
     @Inject

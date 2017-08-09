@@ -12,6 +12,7 @@ import br.com.androidarchictecture.R
 import br.com.androidarchictecture.view.details.contract.DetailsCharacterView
 import br.com.androidarchictecture.view.details.contract.DetailsPresenter
 import br.com.androidarchictecture.view.home.ListCharactersFragment
+import br.com.androidarchictecture.pojo.Character
 
 class DetailsCharacterFragment : Fragment(), DetailsCharacterView {
 
@@ -40,6 +41,14 @@ class DetailsCharacterFragment : Fragment(), DetailsCharacterView {
 
     override fun setPresenter(presenter: DetailsPresenter) {
          mPresenter = presenter
+    }
+
+    override fun showCharacterDetails(character: Character) {
+
+    }
+
+    override fun showMessageLoadFailed() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 }

@@ -22,8 +22,35 @@ interface CharacterApi{
                        @Query("nameStartsWith") search: String): Call<ResponseBody>
 
     @GET("v1/public/characters/{id}")
-    fun loadCharactersDetails(@Path("id") id: String,
+    fun loadCharacterBasicDetails(@Path("id") id: String,
                        @Query("ts") timestamp: String,
                        @Query("apikey") apikey: String,
                        @Query("hash") hash: String): Call<ResponseBody>
+
+
+    @GET("v1/public/characters/{id}/comics")
+    fun loadCharacterComics(@Path("id") id: String,
+                              @Query("ts") timestamp: String,
+                              @Query("apikey") apikey: String,
+                              @Query("hash") hash: String): Call<ResponseBody>
+
+    @GET("v1/public/characters/{id}/events")
+    fun loadCharacterEvents(@Path("id") id: String,
+                              @Query("ts") timestamp: String,
+                              @Query("apikey") apikey: String,
+                              @Query("hash") hash: String): Call<ResponseBody>
+
+
+    @GET("v1/public/characters/{id}/series")
+    fun loadCharacterSeries(@Path("id") id: String,
+                             @Query("ts") timestamp: String,
+                             @Query("apikey") apikey: String,
+                             @Query("hash") hash: String): Call<ResponseBody>
+
+    @GET("v1/public/characters/{id}/stories")
+    fun loadCharacterStories(@Path("id") id: String,
+                            @Query("ts") timestamp: String,
+                            @Query("apikey") apikey: String,
+                            @Query("hash") hash: String): Call<ResponseBody>
+
 }

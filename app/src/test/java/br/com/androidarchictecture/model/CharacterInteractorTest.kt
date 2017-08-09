@@ -1,6 +1,7 @@
 package br.com.androidarchictecture.model
 
 import br.com.androidarchictecture.BuildConfig
+import br.com.androidarchictecture.pojo.*
 import br.com.androidarchictecture.view.application.MarvelApplication
 import br.com.androidarchictecture.view.home.contract.CharacterInteractor
 import com.nhaarman.mockito_kotlin.any
@@ -25,7 +26,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.Executor
 import java.util.concurrent.TimeUnit
-import br.com.androidarchictecture.pojo.Character
+import io.reactivex.Observer
 
 /**
  * Created by pedrohenrique on 02/08/17.
@@ -38,6 +39,8 @@ class CharacterInteractorTest{
     lateinit var mInteractor: CharacterInteractor
 
     lateinit var mRetrofit: Retrofit
+
+    private val spiderManId = 1009610
 
     @Before
     fun setup(){
@@ -81,4 +84,16 @@ class CharacterInteractorTest{
         subscriber.assertNoErrors()
     }
 
+    @Test
+    fun testLoadCharacterDetails(){
+        val subscriber: TestSubscriber<MutableList<Character>> = TestSubscriber.create()
+        var characterDetails = Character()
+        mInteractor.loadCharacterDetails(spiderManId.toLong()).subscribe({ character: Character ->
+            characterDetails = character
+        })
+
+        assertNotNull(characterDetails)
+        assertTrue(!characterDetails.mName.isEmpty())
+        subscriber.assertNoErrors()
+    }
 }

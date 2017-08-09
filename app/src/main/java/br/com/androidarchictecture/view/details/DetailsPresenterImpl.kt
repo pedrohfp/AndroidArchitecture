@@ -1,5 +1,6 @@
 package br.com.androidarchictecture.view.details
 
+import android.util.Log
 import br.com.androidarchictecture.model.schedulers.Schedulers
 import br.com.androidarchictecture.pojo.Character
 import br.com.androidarchictecture.view.details.contract.DetailsActivityView
@@ -33,17 +34,17 @@ class DetailsPresenterImpl: DetailsPresenter{
     override fun loadDetailsCharacter(id: Long) {
         var subscriptions = CompositeDisposable()
 
-        val subscriber = mCharacterInteractor.loadCharactersDetails(id)
+        val subscriber = mCharacterInteractor.loadCharacterDetails(id)
                 .subscribeOn(Schedulers.network())
                 .observeOn(Schedulers.ui())
                 .subscribe(
                         { character: Character ->
-
+                            mDetailsCharacterView.showCharacterDetails(character)
                         },
                         { e ->
-
+                            mDetailsCharacterView.showMessageLoadFailed()
                         }
                 )
-        subscriptions.addAll(subscriber)
+        subscriptions.add(subscriber)
     }
 }

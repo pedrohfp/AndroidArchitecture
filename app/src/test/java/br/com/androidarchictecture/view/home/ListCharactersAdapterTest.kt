@@ -52,7 +52,7 @@ class ListCharactersAdapterTest(){
 
     @Test
     fun testAddMoreItems(){
-        var character = Character(0, "Spider-Man", "", "")
+        var character = Character(0, "Spider-Man", "", "", mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf())
         var newListCharacter: MutableList<Character> = mutableListOf(character)
 
         mAdapter.characterList.addAll(newListCharacter)

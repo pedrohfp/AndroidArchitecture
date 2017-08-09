@@ -2,10 +2,13 @@ package br.com.androidarchictecture.model
 
 import br.com.androidarchictecture.model.rest.Authenticator
 import br.com.androidarchictecture.model.rest.CharacterApi
-import br.com.androidarchictecture.pojo.Character
+import br.com.androidarchictecture.pojo.*
 import br.com.androidarchictecture.view.home.contract.CharacterInteractor
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
+import io.reactivex.ObservableSource
+import io.reactivex.functions.Function4
+import io.reactivex.functions.Function5
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Call
@@ -15,6 +18,7 @@ import retrofit2.Retrofit
  * Created by pedrohenrique on 20/07/17.
  */
 class CharacterInteractorImpl : CharacterInteractor {
+
 
     var mRetrofit: Retrofit
 
@@ -73,7 +77,7 @@ class CharacterInteractorImpl : CharacterInteractor {
 
                         val image = path + "/standard_medium." + extension
 
-                        val character = Character(id, name, image, description)
+                        val character = Character(id, name, image, description, mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf())
 
                         characterList.add(character)
                     }
@@ -88,7 +92,26 @@ class CharacterInteractorImpl : CharacterInteractor {
         }
     }
 
-    override fun loadCharactersDetails(id: Long): Observable<Character> {
+    override fun loadCharacterDetails(id: Long): Observable<Character> {
+
+        val basicDetails = loadCharacterBasicDetails(id)
+        val comics = loadCharacterComics(id)
+        val events = loadCharacterEvents(id)
+        val series = loadCharacterSeries(id)
+        val stories = loadCharacterStories(id)
+
+        return Observable.zip(basicDetails, comics, events, series, stories, Function5 { details, comics, events, series, stories ->
+             Character(details.mId,
+                     details.mName,
+                     details.mThumbnail,
+                     details.mDescription,
+                     comics,
+                     events,
+                     series, stories)
+        })
+    }
+
+    override fun loadCharacterBasicDetails(id: Long): ObservableSource<Character> {
         return Observable.create {
             e: ObservableEmitter<Character> ->
 
@@ -97,7 +120,7 @@ class CharacterInteractorImpl : CharacterInteractor {
             try{
                 var characterApi = mRetrofit.create(CharacterApi::class.java)
 
-                var callBody = characterApi.loadCharactersDetails(
+                var callBody = characterApi.loadCharacterBasicDetails(
                         id.toString(),
                         authenticator.generanteTimestamp(),
                         authenticator.mApiKey,
@@ -106,7 +129,25 @@ class CharacterInteractorImpl : CharacterInteractor {
                 var responseBody = callBody.execute()
 
                 if(responseBody.isSuccessful){
+                    val jsonObject = JSONObject(responseBody.body()?.string())
+                    val data = jsonObject.getJSONObject("data")
+                    val result = data.getJSONArray("results")
+                    val characterObject = result.getJSONObject(0)
 
+                    val id = characterObject.getLong("id")
+                    val name = characterObject.getString("name")
+                    val description = characterObject.getString("description")
+
+                    val thumbnail = characterObject.getJSONObject("thumbnail")
+                    val path = thumbnail.getString("path")
+                    val extension = thumbnail.getString("extension")
+
+                    val image = path + "." + extension
+
+                    val character = Character(id, name, image, description, mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf())
+
+                    e.onNext(character)
+                    e.onComplete()
                 }
             }catch(erro:Exception){
                 erro.printStackTrace()
@@ -114,6 +155,228 @@ class CharacterInteractorImpl : CharacterInteractor {
             }
         }
     }
+
+    override fun loadCharacterComics(id: Long): ObservableSource<MutableList<Comic>> {
+        return Observable.create {
+            e: ObservableEmitter<MutableList<Comic>> ->
+
+            var authenticator = Authenticator.instance
+
+            try{
+                var characterApi = mRetrofit.create(CharacterApi::class.java)
+
+                var callBody = characterApi.loadCharacterComics(
+                        id.toString(),
+                        authenticator.generanteTimestamp(),
+                        authenticator.mApiKey,
+                        authenticator.generateHash())
+
+                var responseBody = callBody.execute()
+
+                if (responseBody.isSuccessful){
+                    val jsonObject = JSONObject(responseBody.body()?.string())
+                    val data = jsonObject.getJSONObject("data")
+                    val result = data.getJSONArray("results")
+
+                    val comicsList: MutableList<Comic> = mutableListOf()
+
+                    for(i in 0..(result.length() - 1)) {
+                        val comicObject = result.getJSONObject(i)
+                        val id = comicObject.getLong("id")
+                        val title = comicObject.getString("title")
+                        val description = comicObject.getString("description")
+                        var image = ""
+
+                        if(!comicObject.isNull("thumbnail")) {
+                            val thumbnail = comicObject.getJSONObject("thumbnail")
+                            val path = thumbnail.getString("path")
+                            val extension = thumbnail.getString("extension")
+
+                            image = path + "." + extension
+                        }
+                        val comic = Comic(id, title, image, description)
+
+                        comicsList.add(comic)
+                    }
+
+                    e.onNext(comicsList)
+                    e.onComplete()
+                }
+
+            }catch (erro: Exception){
+                erro.printStackTrace()
+                e.onError(erro)
+            }
+        }
+    }
+
+    override fun loadCharacterEvents(id: Long): ObservableSource<MutableList<Event>> {
+        return Observable.create {
+            e: ObservableEmitter<MutableList<Event>> ->
+
+            var authenticator = Authenticator.instance
+
+            try{
+                var characterApi = mRetrofit.create(CharacterApi::class.java)
+
+                var callBody = characterApi.loadCharacterEvents(
+                        id.toString(),
+                        authenticator.generanteTimestamp(),
+                        authenticator.mApiKey,
+                        authenticator.generateHash())
+
+                var responseBody = callBody.execute()
+
+                if (responseBody.isSuccessful){
+                    val jsonObject = JSONObject(responseBody.body()?.string())
+                    val data = jsonObject.getJSONObject("data")
+                    val result = data.getJSONArray("results")
+
+                    val eventsList: MutableList<Event> = mutableListOf()
+
+                    for(i in 0..(result.length() - 1)) {
+                        val eventObject = result.getJSONObject(i)
+                        val id = eventObject.getLong("id")
+                        val title = eventObject.getString("title")
+                        val description = eventObject.getString("description")
+                        var image = ""
+
+                        if(!eventObject.isNull("thumbnail")) {
+                            val thumbnail = eventObject.getJSONObject("thumbnail")
+                            val path = thumbnail.getString("path")
+                            val extension = thumbnail.getString("extension")
+
+                            image = path + "." + extension
+                        }
+
+                        val event = Event(id, title, image, description)
+
+                        eventsList.add(event)
+                    }
+
+                    e.onNext(eventsList)
+                    e.onComplete()
+                }
+
+            }catch (erro: Exception){
+                erro.printStackTrace()
+                e.onError(erro)
+            }
+        }
+    }
+
+    override fun loadCharacterSeries(id: Long): ObservableSource<MutableList<Serie>> {
+        return Observable.create {
+            e: ObservableEmitter<MutableList<Serie>> ->
+
+            var authenticator = Authenticator.instance
+
+            try{
+                var characterApi = mRetrofit.create(CharacterApi::class.java)
+
+                var callBody = characterApi.loadCharacterSeries(
+                        id.toString(),
+                        authenticator.generanteTimestamp(),
+                        authenticator.mApiKey,
+                        authenticator.generateHash())
+
+                var responseBody = callBody.execute()
+
+                if (responseBody.isSuccessful){
+                    val jsonObject = JSONObject(responseBody.body()?.string())
+                    val data = jsonObject.getJSONObject("data")
+                    val result = data.getJSONArray("results")
+
+                    val seriesList: MutableList<Serie> = mutableListOf()
+
+                    for(i in 0..(result.length() - 1)) {
+                        val serieObject = result.getJSONObject(i)
+                        val id = serieObject.getLong("id")
+                        val title = serieObject.getString("title")
+                        val description = serieObject.getString("description")
+                        var image = ""
+
+                        if(!serieObject.isNull("thumbnail")) {
+                            val thumbnail = serieObject.getJSONObject("thumbnail")
+                            val path = thumbnail.getString("path")
+                            val extension = thumbnail.getString("extension")
+
+                            image = path + "." + extension
+                        }
+
+                        val serie = Serie(id, title, image, description)
+
+                        seriesList.add(serie)
+                    }
+
+                    e.onNext(seriesList)
+                    e.onComplete()
+                }
+
+            }catch (erro: Exception){
+                erro.printStackTrace()
+                e.onError(erro)
+            }
+
+        }
+    }
+
+    override fun loadCharacterStories(id: Long): ObservableSource<MutableList<Storie>> {
+        return Observable.create {
+            e: ObservableEmitter<MutableList<Storie>> ->
+
+            var authenticator = Authenticator.instance
+
+            try{
+                var characterApi = mRetrofit.create(CharacterApi::class.java)
+
+                var callBody = characterApi.loadCharacterStories(
+                        id.toString(),
+                        authenticator.generanteTimestamp(),
+                        authenticator.mApiKey,
+                        authenticator.generateHash())
+
+                var responseBody = callBody.execute()
+
+                if (responseBody.isSuccessful){
+                    val jsonObject = JSONObject(responseBody.body()?.string())
+                    val data = jsonObject.getJSONObject("data")
+                    val result = data.getJSONArray("results")
+
+                    val storiesList: MutableList<Storie> = mutableListOf()
+
+                    for(i in 0..(result.length() - 1)) {
+                        val storieObject = result.getJSONObject(i)
+                        val id = storieObject.getLong("id")
+                        val title = storieObject.getString("title")
+                        val description = storieObject.getString("description")
+
+                        var image = ""
+
+                        if(!storieObject.isNull("thumbnail")) {
+                            val thumbnail = storieObject.getJSONObject("thumbnail")
+                            val path = thumbnail.getString("path")
+                            val extension = thumbnail.getString("extension")
+
+                            image = path + "." + extension
+                        }
+
+                        val storie = Storie(id, title, image, description)
+
+                        storiesList.add(storie)
+                    }
+
+                    e.onNext(storiesList)
+                    e.onComplete()
+                }
+
+            }catch (erro: Exception){
+                erro.printStackTrace()
+                e.onError(erro)
+            }
+        }
+    }
+
 
 
 }

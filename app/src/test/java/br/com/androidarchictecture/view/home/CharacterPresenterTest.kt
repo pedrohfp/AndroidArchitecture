@@ -1,4 +1,4 @@
-package br.com.androidarchictecture.presenters
+package br.com.androidarchictecture.view.home
 
 import br.com.androidarchictecture.pojo.Character
 import br.com.androidarchictecture.pojo.StringWord

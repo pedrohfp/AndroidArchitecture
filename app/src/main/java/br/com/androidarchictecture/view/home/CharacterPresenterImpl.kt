@@ -1,5 +1,6 @@
 package br.com.androidarchictecture.view.home
 
+import android.util.Log
 import br.com.androidarchictecture.model.schedulers.Schedulers
 import br.com.androidarchictecture.pojo.Character
 import br.com.androidarchictecture.util.SimpleIdlingResource
@@ -56,5 +57,8 @@ class CharacterPresenterImpl: Presenter {
                 )
         subscriptions.add(subscriber)
     }
+
+
+
 
 }
