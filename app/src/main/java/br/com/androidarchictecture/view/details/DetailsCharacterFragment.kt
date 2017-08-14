@@ -12,6 +12,7 @@ import br.com.androidarchictecture.R
 import br.com.androidarchictecture.view.details.contract.DetailsCharacterView
 import br.com.androidarchictecture.view.details.contract.DetailsPresenter
 import br.com.androidarchictecture.pojo.Character
+import br.com.androidarchictecture.util.SimpleIdlingResource
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_details_character.*
 
@@ -86,7 +87,7 @@ class DetailsCharacterFragment : Fragment(), DetailsCharacterView {
          mPresenter = presenter
     }
 
-    override fun showCharacterDetails(character: Character) {
+    override fun showCharacterDetails(character: Character, idlingResource: SimpleIdlingResource) {
 
          comicsTitle.visibility = View.VISIBLE
          eventsTitle.visibility = View.VISIBLE
@@ -124,6 +125,8 @@ class DetailsCharacterFragment : Fragment(), DetailsCharacterView {
              seriesTitle.visibility = View.GONE
              recyclerSeries.visibility = View.GONE
          }
+
+        idlingResource.setIdleState(true)
     }
 
     override fun showMessageLoadFailed() {

@@ -1,8 +1,10 @@
 package br.com.androidarchictecture.view.details
 
 import br.com.androidarchictecture.BuildConfig
+import br.com.androidarchictecture.util.SimpleIdlingResource
 import br.com.androidarchictecture.view.details.contract.DetailsPresenter
 import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.eq
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import org.junit.Assert.*
@@ -25,7 +27,6 @@ class CharacterDetailsActivityTest{
 
     @Before
     fun setup(){
-
         mPresenter = mock()
 
         var controller: ActivityController<CharacterDetailsActivity> = Robolectric.buildActivity(CharacterDetailsActivity::class.java).create()
@@ -36,6 +37,6 @@ class CharacterDetailsActivityTest{
 
     @Test
     fun testLoadCharacterDetailsInitiate(){
-        verify(mPresenter).loadDetailsCharacter(any())
+        verify(mPresenter).loadDetailsCharacter(any(), any())
     }
 }

@@ -65,6 +65,12 @@ class MainActivityInstrumentedTest{
                 .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(19, scrollTo()))
     }
 
+    @Test
+    fun testShowDetails(){
+        onView(withId(R.id.recyclerView))
+                .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(2, click()))
+    }
+
     @After
     fun unregisterIdlingResource(){
         if (mIdlingResource != null) {

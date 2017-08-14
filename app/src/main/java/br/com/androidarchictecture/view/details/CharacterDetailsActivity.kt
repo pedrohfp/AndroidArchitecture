@@ -3,11 +3,13 @@ package br.com.androidarchictecture.view.details
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.test.espresso.IdlingResource
 import android.util.Log
 import android.view.MenuItem
 
 import br.com.androidarchictecture.R
 import br.com.androidarchictecture.util.ActivityUtils
+import br.com.androidarchictecture.util.SimpleIdlingResource
 import br.com.androidarchictecture.view.application.MarvelApplication
 import br.com.androidarchictecture.view.details.contract.DetailsActivityView
 import br.com.androidarchictecture.view.details.contract.DetailsPresenter
@@ -26,6 +28,9 @@ class CharacterDetailsActivity : DetailsActivityView() {
 
     var mCharacterId: Long? = null
 
+    //Idling Resource - Espresso
+    private var mIdlingResource: SimpleIdlingResource? = null
+
     companion object {
 
         private val INTENT_ID = "character_id"
@@ -40,6 +45,8 @@ class CharacterDetailsActivity : DetailsActivityView() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_character_details)
+
+        getIdlingResource()
 
         supportActionBar!!.setHomeButtonEnabled(true)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -70,7 +77,7 @@ class CharacterDetailsActivity : DetailsActivityView() {
     override fun onResume() {
         super.onResume()
 
-        mPresenter.loadDetailsCharacter(mCharacterId!!)
+        mPresenter.loadDetailsCharacter(mCharacterId!!, mIdlingResource!!)
     }
 
     @Inject
@@ -83,5 +90,13 @@ class CharacterDetailsActivity : DetailsActivityView() {
             onBackPressed()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun getIdlingResource(): IdlingResource {
+        if(mIdlingResource == null){
+            mIdlingResource = SimpleIdlingResource()
+        }
+
+        return mIdlingResource!!
     }
 }
