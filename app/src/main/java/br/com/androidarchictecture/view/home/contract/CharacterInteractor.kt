@@ -14,6 +14,5 @@ interface CharacterInteractor {
     fun loadCharacterComics(id: Long): ObservableSource<MutableList<Comic>>
     fun loadCharacterEvents(id: Long): ObservableSource<MutableList<Event>>
     fun loadCharacterSeries(id: Long): ObservableSource<MutableList<Serie>>
-    fun loadCharacterStories(id: Long): ObservableSource<MutableList<Storie>>
 
 }

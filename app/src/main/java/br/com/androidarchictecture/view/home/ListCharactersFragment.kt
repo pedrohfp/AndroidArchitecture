@@ -128,7 +128,6 @@ class ListCharactersFragment : Fragment(), ListCharactersView{
 
     override fun loadCharacters(characters: MutableList<Character>, idlingResource: SimpleIdlingResource?, isSearch: Boolean) {
         if(isSearch == false) {
-            adapter.characterList.clear()
             adapter.characterList.addAll(characters)
             adapter.notifyDataSetChanged()
         }else{

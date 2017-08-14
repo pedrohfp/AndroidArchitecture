@@ -94,4 +94,8 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
+    <string name="description">Description</string>
+    <string name="comics">Comics</string>
+    <string name="events">Events</string>
+    <string name="series">Series</string>
 </resources>

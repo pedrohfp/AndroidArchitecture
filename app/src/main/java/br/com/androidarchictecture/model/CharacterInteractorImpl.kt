@@ -77,7 +77,7 @@ class CharacterInteractorImpl : CharacterInteractor {
 
                         val image = path + "/standard_medium." + extension
 
-                        val character = Character(id, name, image, description, mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf())
+                        val character = Character(id, name, image, description, mutableListOf(), mutableListOf(), mutableListOf())
 
                         characterList.add(character)
                     }
@@ -98,16 +98,15 @@ class CharacterInteractorImpl : CharacterInteractor {
         val comics = loadCharacterComics(id)
         val events = loadCharacterEvents(id)
         val series = loadCharacterSeries(id)
-        val stories = loadCharacterStories(id)
 
-        return Observable.zip(basicDetails, comics, events, series, stories, Function5 { details, comics, events, series, stories ->
+        return Observable.zip(basicDetails, comics, events, series, Function4 { details, comics, events, series ->
              Character(details.mId,
                      details.mName,
                      details.mThumbnail,
                      details.mDescription,
                      comics,
                      events,
-                     series, stories)
+                     series)
         })
     }
 
@@ -144,7 +143,7 @@ class CharacterInteractorImpl : CharacterInteractor {
 
                     val image = path + "." + extension
 
-                    val character = Character(id, name, image, description, mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf())
+                    val character = Character(id, name, image, description, mutableListOf(), mutableListOf(), mutableListOf())
 
                     e.onNext(character)
                     e.onComplete()
@@ -192,7 +191,7 @@ class CharacterInteractorImpl : CharacterInteractor {
                             val path = thumbnail.getString("path")
                             val extension = thumbnail.getString("extension")
 
-                            image = path + "." + extension
+                            image = path + "/portrait_xlarge." + extension
                         }
                         val comic = Comic(id, title, image, description)
 
@@ -246,7 +245,7 @@ class CharacterInteractorImpl : CharacterInteractor {
                             val path = thumbnail.getString("path")
                             val extension = thumbnail.getString("extension")
 
-                            image = path + "." + extension
+                            image = path + "/portrait_xlarge." + extension
                         }
 
                         val event = Event(id, title, image, description)
@@ -301,7 +300,7 @@ class CharacterInteractorImpl : CharacterInteractor {
                             val path = thumbnail.getString("path")
                             val extension = thumbnail.getString("extension")
 
-                            image = path + "." + extension
+                            image = path + "/portrait_xlarge." + extension
                         }
 
                         val serie = Serie(id, title, image, description)
@@ -321,61 +320,6 @@ class CharacterInteractorImpl : CharacterInteractor {
         }
     }
 
-    override fun loadCharacterStories(id: Long): ObservableSource<MutableList<Storie>> {
-        return Observable.create {
-            e: ObservableEmitter<MutableList<Storie>> ->
-
-            var authenticator = Authenticator.instance
-
-            try{
-                var characterApi = mRetrofit.create(CharacterApi::class.java)
-
-                var callBody = characterApi.loadCharacterStories(
-                        id.toString(),
-                        authenticator.generanteTimestamp(),
-                        authenticator.mApiKey,
-                        authenticator.generateHash())
-
-                var responseBody = callBody.execute()
-
-                if (responseBody.isSuccessful){
-                    val jsonObject = JSONObject(responseBody.body()?.string())
-                    val data = jsonObject.getJSONObject("data")
-                    val result = data.getJSONArray("results")
-
-                    val storiesList: MutableList<Storie> = mutableListOf()
-
-                    for(i in 0..(result.length() - 1)) {
-                        val storieObject = result.getJSONObject(i)
-                        val id = storieObject.getLong("id")
-                        val title = storieObject.getString("title")
-                        val description = storieObject.getString("description")
-
-                        var image = ""
-
-                        if(!storieObject.isNull("thumbnail")) {
-                            val thumbnail = storieObject.getJSONObject("thumbnail")
-                            val path = thumbnail.getString("path")
-                            val extension = thumbnail.getString("extension")
-
-                            image = path + "." + extension
-                        }
-
-                        val storie = Storie(id, title, image, description)
-
-                        storiesList.add(storie)
-                    }
-
-                    e.onNext(storiesList)
-                    e.onComplete()
-                }
-
-            }catch (erro: Exception){
-                erro.printStackTrace()
-                e.onError(erro)
-            }
-        }
-    }
 
 
 

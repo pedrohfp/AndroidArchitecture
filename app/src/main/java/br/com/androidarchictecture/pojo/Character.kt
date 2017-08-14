@@ -12,7 +12,6 @@ class Character{
     var mComics: MutableList<Comic>
     var mEvents: MutableList<Event>
     var mSeries: MutableList<Serie>
-    var mStories: MutableList<Storie>
 
     constructor(){
         this.mId = 0
@@ -22,10 +21,9 @@ class Character{
         this.mComics = mutableListOf()
         this.mEvents = mutableListOf()
         this.mSeries = mutableListOf()
-        this.mStories = mutableListOf()
     }
 
-    constructor(mId: Long, mName: String, mThumbnail: String, mDescription: String, mComics: MutableList<Comic>, mEvents: MutableList<Event>, mSeries: MutableList<Serie>, mStories: MutableList<Storie>) {
+    constructor(mId: Long, mName: String, mThumbnail: String, mDescription: String, mComics: MutableList<Comic>, mEvents: MutableList<Event>, mSeries: MutableList<Serie>) {
         this.mId = mId
         this.mName = mName
         this.mThumbnail = mThumbnail
@@ -33,7 +31,6 @@ class Character{
         this.mComics = mComics
         this.mEvents = mEvents
         this.mSeries = mSeries
-        this.mStories = mStories
     }
 
 
