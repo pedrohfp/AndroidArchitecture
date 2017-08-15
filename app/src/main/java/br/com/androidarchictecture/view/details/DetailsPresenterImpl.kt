@@ -1,11 +1,7 @@
 package br.com.androidarchictecture.view.details
 
-import android.support.test.espresso.idling.CountingIdlingResource
-import android.util.Log
 import br.com.androidarchictecture.model.schedulers.Schedulers
 import br.com.androidarchictecture.pojo.Character
-import br.com.androidarchictecture.util.DetailsIdlingResource
-import br.com.androidarchictecture.util.SimpleIdlingResource
 import br.com.androidarchictecture.view.details.contract.DetailsActivityView
 import br.com.androidarchictecture.view.details.contract.DetailsCharacterView
 import br.com.androidarchictecture.view.details.contract.DetailsPresenter
@@ -34,11 +30,7 @@ class DetailsPresenterImpl: DetailsPresenter{
         mDetailsCharacterView.setPresenter(this)
     }
 
-    override fun loadDetailsCharacter(id: Long, idlingResource: DetailsIdlingResource) {
-
-        if(idlingResource != null){
-            idlingResource.setIdleState(true)
-        }
+    override fun loadDetailsCharacter(id: Long) {
 
         var subscriptions = CompositeDisposable()
 
@@ -47,7 +39,7 @@ class DetailsPresenterImpl: DetailsPresenter{
                 .observeOn(Schedulers.ui())
                 .subscribe(
                         { character: Character ->
-                            mDetailsCharacterView.showCharacterDetails(character, idlingResource)
+                            mDetailsCharacterView.showCharacterDetails(character)
                         },
                         { e ->
                             mDetailsCharacterView.showMessageLoadFailed()

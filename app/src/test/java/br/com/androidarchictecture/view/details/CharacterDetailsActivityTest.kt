@@ -37,6 +37,6 @@ class CharacterDetailsActivityTest{
 
     @Test
     fun testLoadCharacterDetailsInitiate(){
-        verify(mPresenter).loadDetailsCharacter(any(), any())
+        verify(mPresenter).loadDetailsCharacter(any())
     }
 }

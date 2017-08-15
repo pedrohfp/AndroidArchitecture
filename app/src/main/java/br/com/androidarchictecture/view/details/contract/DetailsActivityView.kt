@@ -6,6 +6,4 @@ import br.com.androidarchictecture.view.base.BaseActivity
 /**
  * Created by pedrohenrique on 06/08/17.
  */
-abstract class DetailsActivityView: BaseActivity<DetailsPresenter>() {
-    abstract fun getIdlingResource(): IdlingResource
-}
+abstract class DetailsActivityView: BaseActivity<DetailsPresenter>() {}

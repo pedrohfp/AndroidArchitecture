@@ -12,14 +12,11 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.internal.schedulers.ExecutorScheduler
 import io.reactivex.plugins.RxJavaPlugins
 import org.junit.After
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.Executor
 import java.util.concurrent.TimeUnit
 import br.com.androidarchictecture.pojo.Character
-import br.com.androidarchictecture.util.DetailsIdlingResource
-import br.com.androidarchictecture.util.SimpleIdlingResource
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
@@ -29,7 +26,6 @@ import io.reactivex.Observable
  * Created by pedrohenrique on 08/08/17.
  */
 class DetailsPresenterTest{
-    lateinit var mIdlingResource: DetailsIdlingResource
     lateinit var mDetailsActivityView: DetailsActivityView
     lateinit var mDetailsCharacterView: DetailsCharacterView
     lateinit var mCharacterInteractor: CharacterInteractor
@@ -37,7 +33,6 @@ class DetailsPresenterTest{
 
     @Before
     fun setup(){
-        mIdlingResource = mock()
         mDetailsActivityView = mock()
         mDetailsCharacterView = mock()
         mCharacterInteractor = mock()
@@ -71,14 +66,14 @@ class DetailsPresenterTest{
     fun testLoadCharactersDetailsSuccessful(){
         var character = Character()
         whenever(mCharacterInteractor.loadCharacterDetails(any())).thenReturn(Observable.just(character))
-        mDetailsPresenter.loadDetailsCharacter(any(), mIdlingResource)
-        verify(mDetailsCharacterView).showCharacterDetails(character, mIdlingResource)
+        mDetailsPresenter.loadDetailsCharacter(any())
+        verify(mDetailsCharacterView).showCharacterDetails(character)
     }
 
     @Test
     fun testLoadCharactersDetailsFailed(){
         whenever(mCharacterInteractor.loadCharacterDetails(any())).thenReturn(Observable.error(Exception()))
-        mDetailsPresenter.loadDetailsCharacter(any(), mIdlingResource)
+        mDetailsPresenter.loadDetailsCharacter(any())
         verify(mDetailsCharacterView).showMessageLoadFailed()
     }
 }

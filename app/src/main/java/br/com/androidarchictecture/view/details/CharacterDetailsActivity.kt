@@ -9,15 +9,11 @@ import android.view.MenuItem
 
 import br.com.androidarchictecture.R
 import br.com.androidarchictecture.util.ActivityUtils
-import br.com.androidarchictecture.util.DetailsIdlingResource
-import br.com.androidarchictecture.util.SimpleIdlingResource
 import br.com.androidarchictecture.view.application.MarvelApplication
 import br.com.androidarchictecture.view.details.contract.DetailsActivityView
 import br.com.androidarchictecture.view.details.contract.DetailsPresenter
 import br.com.androidarchictecture.view.details.di.DaggerDetailsComponent
 import br.com.androidarchictecture.view.details.di.DetailsModule
-import br.com.androidarchictecture.view.home.di.CharacterListModule
-import br.com.androidarchictecture.view.home.di.DaggerCharacterComponent
 import javax.inject.Inject
 
 class CharacterDetailsActivity : DetailsActivityView() {
@@ -28,9 +24,6 @@ class CharacterDetailsActivity : DetailsActivityView() {
     var mDetailsCharacterFragment: DetailsCharacterFragment? = null
 
     var mCharacterId: Long? = null
-
-    //Idling Resource - Espresso
-    private var mIdlingResource: DetailsIdlingResource? = null
 
     companion object {
         val DETAILS_TAG = "details"
@@ -46,8 +39,6 @@ class CharacterDetailsActivity : DetailsActivityView() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_character_details)
-
-        getIdlingResource()
 
         supportActionBar!!.setHomeButtonEnabled(true)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -81,7 +72,7 @@ class CharacterDetailsActivity : DetailsActivityView() {
     override fun onResume() {
         super.onResume()
 
-        mPresenter.loadDetailsCharacter(mCharacterId!!, mIdlingResource!!)
+        mPresenter.loadDetailsCharacter(mCharacterId!!)
     }
 
     @Inject
@@ -94,13 +85,5 @@ class CharacterDetailsActivity : DetailsActivityView() {
             onBackPressed()
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun getIdlingResource(): IdlingResource {
-        if(mIdlingResource == null){
-            mIdlingResource = DetailsIdlingResource()
-        }
-
-        return mIdlingResource!!
     }
 }
