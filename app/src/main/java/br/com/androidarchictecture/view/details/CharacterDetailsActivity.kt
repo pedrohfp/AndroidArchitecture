@@ -9,6 +9,7 @@ import android.view.MenuItem
 
 import br.com.androidarchictecture.R
 import br.com.androidarchictecture.util.ActivityUtils
+import br.com.androidarchictecture.util.DetailsIdlingResource
 import br.com.androidarchictecture.util.SimpleIdlingResource
 import br.com.androidarchictecture.view.application.MarvelApplication
 import br.com.androidarchictecture.view.details.contract.DetailsActivityView
@@ -29,10 +30,10 @@ class CharacterDetailsActivity : DetailsActivityView() {
     var mCharacterId: Long? = null
 
     //Idling Resource - Espresso
-    private var mIdlingResource: SimpleIdlingResource? = null
+    private var mIdlingResource: DetailsIdlingResource? = null
 
     companion object {
-
+        val DETAILS_TAG = "details"
         private val INTENT_ID = "character_id"
 
         fun newIntent(context: Context, id: Long): Intent {
@@ -63,7 +64,10 @@ class CharacterDetailsActivity : DetailsActivityView() {
             mDetailsCharacterFragment = DetailsCharacterFragment.newInstance()
 
             ActivityUtils
-                    .addFragmentToActivity(supportFragmentManager, mDetailsCharacterFragment!!, R.id.details_content)
+                    .addFragmentToActivity(supportFragmentManager,
+                            mDetailsCharacterFragment!!,
+                            R.id.details_content,
+                            DETAILS_TAG)
         }
 
         //Create the presenter
@@ -94,7 +98,7 @@ class CharacterDetailsActivity : DetailsActivityView() {
 
     override fun getIdlingResource(): IdlingResource {
         if(mIdlingResource == null){
-            mIdlingResource = SimpleIdlingResource()
+            mIdlingResource = DetailsIdlingResource()
         }
 
         return mIdlingResource!!

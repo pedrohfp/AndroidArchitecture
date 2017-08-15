@@ -18,6 +18,7 @@ import org.junit.Test
 import java.util.concurrent.Executor
 import java.util.concurrent.TimeUnit
 import br.com.androidarchictecture.pojo.Character
+import br.com.androidarchictecture.util.DetailsIdlingResource
 import br.com.androidarchictecture.util.SimpleIdlingResource
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.verify
@@ -28,7 +29,7 @@ import io.reactivex.Observable
  * Created by pedrohenrique on 08/08/17.
  */
 class DetailsPresenterTest{
-    lateinit var mIdlingResource: SimpleIdlingResource
+    lateinit var mIdlingResource: DetailsIdlingResource
     lateinit var mDetailsActivityView: DetailsActivityView
     lateinit var mDetailsCharacterView: DetailsCharacterView
     lateinit var mCharacterInteractor: CharacterInteractor

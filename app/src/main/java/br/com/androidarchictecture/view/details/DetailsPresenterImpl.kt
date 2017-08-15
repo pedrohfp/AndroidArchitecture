@@ -4,6 +4,7 @@ import android.support.test.espresso.idling.CountingIdlingResource
 import android.util.Log
 import br.com.androidarchictecture.model.schedulers.Schedulers
 import br.com.androidarchictecture.pojo.Character
+import br.com.androidarchictecture.util.DetailsIdlingResource
 import br.com.androidarchictecture.util.SimpleIdlingResource
 import br.com.androidarchictecture.view.details.contract.DetailsActivityView
 import br.com.androidarchictecture.view.details.contract.DetailsCharacterView
@@ -33,7 +34,7 @@ class DetailsPresenterImpl: DetailsPresenter{
         mDetailsCharacterView.setPresenter(this)
     }
 
-    override fun loadDetailsCharacter(id: Long, idlingResource: SimpleIdlingResource) {
+    override fun loadDetailsCharacter(id: Long, idlingResource: DetailsIdlingResource) {
 
         if(idlingResource != null){
             idlingResource.setIdleState(true)

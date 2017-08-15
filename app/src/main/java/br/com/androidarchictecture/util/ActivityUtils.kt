@@ -23,4 +23,13 @@ object ActivityUtils {
         transaction.commit()
     }
 
+    fun addFragmentToActivity(@NonNull fragmentManager: FragmentManager,
+                              @NonNull fragment: Fragment, frameId: Int, tag: String) {
+        checkNotNull(fragmentManager)
+        checkNotNull(fragment)
+        val transaction = fragmentManager.beginTransaction()
+        transaction.add(frameId, fragment, tag)
+        transaction.commit()
+    }
+
 }
